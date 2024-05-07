@@ -1,0 +1,89 @@
+﻿var appConfig = {
+    banners: [],
+    stu_apps: [],
+    emp_apps: [],
+    msg_views: []
+};
+
+appConfig.banners = [
+    { seq: 1, img: 'favorite.jpg?2', href: 'https://www.youtube.com/watch?v=qScrE6wXvL8' },
+//{ seq: 5, img: 'APPS停止服務預告m.jpg', href: 'http://news.fcu.edu.tw/wSite/ct?ctNode=10763&mp=9000&xItem=046F72152B819648482581AA002B913C' },
+    {seq: 6, img: '2017100301.png', href: 'https://myfcu.fcu.edu.tw/main/webClientMyFcuMain.aspx#/prog/TP923008' },
+    { seq: 8, img: '2017092002.jpg', href: 'http://software-bank.fcu.edu.tw/' },
+//{ seq: 9, img: '2017092001.png', href: 'http://www.oit.fcu.edu.tw/wSite/ct?xItem=244610&ctNode=11152&mp=271201' },
+//{ seq: 10, img: '2017090101.jpg', href: 'http://news.fcu.edu.tw/wSite/ct?ctNode=10760&mp=9000&xItem=FB3EAD83A02FF0654825818E002C9231' },
+//{ seq: 20, img: '2017090102.jpg', href: '' },
+    {seq: 50, img: 'desk_oit.jpg', href: 'http://www.oit.fcu.edu.tw/wSite/ct?xItem=59008&ctNode=44659&mp=271201' }
+];
+
+appConfig.stu_banners = [
+    { seq: 1, img: 'favorite.jpg?2', href: 'https://www.youtube.com/watch?v=qScrE6wXvL8' },
+//{ seq: 5, img: 'APPS停止服務預告m.jpg', href: 'http://news.fcu.edu.tw/wSite/ct?ctNode=10763&mp=9000&xItem=046F72152B819648482581AA002B913C' },
+    {seq: 6, img: '2017100301.png', href: 'https://myfcu.fcu.edu.tw/main/webClientMyFcuMain.aspx#/prog/TP923008' },
+    { seq: 8, img: '2017092002.jpg', href: 'http://software-bank.fcu.edu.tw/' },
+//{ seq: 9, img: '2017092001.png', href: 'http://www.oit.fcu.edu.tw/wSite/ct?xItem=244610&ctNode=11152&mp=271201' },
+//{ seq: 10, img: '2017090101.jpg', href: 'http://news.fcu.edu.tw/wSite/ct?ctNode=10760&mp=9000&xItem=FB3EAD83A02FF0654825818E002C9231' },
+//{ seq: 20, img: '2017090102.jpg', href: '' },
+    {seq: 50, img: 'desk_oit.jpg', href: 'http://www.oit.fcu.edu.tw/wSite/ct?xItem=59008&ctNode=44659&mp=271201' }
+];
+
+appConfig.emp_banners = [
+    { seq: 10, img: 'favorite.jpg?2', href: 'https://www.youtube.com/watch?v=qScrE6wXvL8' },
+//{ seq: 50, img: 'APPS停止服務預告m.jpg', href: 'http://news.fcu.edu.tw/wSite/ct?ctNode=10763&mp=9000&xItem=046F72152B819648482581AA002B913C' },
+    {seq: 60, img: '2017100301.png', href: 'https://myfcu.fcu.edu.tw/main/webClientMyFcuMain.aspx#/prog/TP923008' },
+    { seq: 80, img: '2017092002.jpg', href: 'http://software-bank.fcu.edu.tw/' },
+//{ seq: 90, img: '2017092001.png', href: 'http://www.oit.fcu.edu.tw/wSite/ct?xItem=244610&ctNode=11152&mp=271201' },
+//{ seq: 100, img: '2017090101.jpg', href: 'http://news.fcu.edu.tw/wSite/ct?ctNode=10760&mp=9000&xItem=FB3EAD83A02FF0654825818E002C9231' },
+//{ seq: 200, img: '2017090102.jpg', href: '' },
+    {seq: 500, img: 'desk_oit.jpg', href: 'http://www.oit.fcu.edu.tw/wSite/ct?xItem=59008&ctNode=44659&mp=271201' },
+    { seq: 5, img: '2017101301_1024x360.jpg', href: 'http://ilearn2.fcu.edu.tw/course/view.php?id=43888' },
+    { seq: 4, img: '保費繳費查詢.jpg', href: '../S1301/S1301_InsurancePay_proof.aspx' },
+    { seq: 3, img: '個人薪資單查詢.jpg', href: '../S1301/S1301_SalaryStatement_query.aspx' }
+];
+
+//appConfig.stu_apps = [
+//    { seq: 2, title: 'Learning Portfolio', icon: 'protfolio.png', href: '../S4208/S4208_learningportfolio_ldap.aspx' },
+//    { seq: 3, title: '網路教室<br />iLearn2.0', icon: 'ilearn.png', href: '../S9902/S990203_ilearn2sso_login.aspx' },
+//    { seq: 4, title: '學習輔導平台', icon: 'counseling.png', href: '../S9902/S990202_csal_ldap.aspx' },
+//    { seq: 5, title: '職能發展', icon: 'career.png', href: '../S9902/S990204_cdc_sso.aspx' },
+//    { seq: 6, title: 'Office 365', icon: 'o365.png', href: 'http://www.o365.fcu.edu.tw/' }
+//];
+
+//    appConfig.emp_apps = [
+//    { seq: 3, title: '網路教室<br />iLearn2.0', icon: 'ilearn.png', href: '../S9902/S990203_ilearn2sso_login.aspx' },
+//    //{ seq: 4, title: '學習輔導平台', icon: 'counseling.png', href: '../S9902/S990202_csal_ldap.aspx' },
+//    {seq: 4, title: '導師關懷', icon: 'fcu.png', href: '../S9902/S990208_teacher_sso.aspx' },
+//    { seq: 5, title: '簽核管理中心', icon: 'check.png', href: '../appsToNotes.aspx?url=appadm.nsf/mobile#home' },
+//    { seq: 6, title: 'Office 365', icon: 'o365.png', href: 'http://www.o365.fcu.edu.tw/' }
+//];
+
+appConfig.msg_views = [
+//{ seq: 25, title: '校園訊息', title_en: 'Campus Information', value: 0, page: 'view/messageListPage.htm', guest: true, show: false, stud: false },
+    {seq: 25, title: '來文函轉', title_en: 'Communication Letter', value: 0, page: 'view/messageListPage.htm?20200419a', guest: true, show: false, stud: false },
+    { seq: 30, title: '單位訊息', title_en: '', value: 1, page: 'view/messageListPage.htm', guest: false, show: false, stud: false },
+    { seq: 40, title: '我的訂閱', title_en: '', value: 2, page: 'view/messageListPage.htm', guest: false, show: false, stud: false },
+    { seq: 50, title: '我的收藏', title_en: '', value: 3, page: 'view/myFavoriteViewPage.htm', guest: false, show: false, stud: false },
+    { seq: 20, title: '活動訊息', title_en: 'Activities', value: 4, page: 'view/listByDatePage.htm?20181129', guest: false, show: false, stud: false },
+    { seq: 10, title: '我的通知', title_en: 'Notes', value: 5, page: 'view/myMessagePage.htm', guest: false, show: true, stud: true },
+    { seq: 15, title: '本週最新', title_en: 'Latest News', value: 6, page: 'view/messageListPage.htm', guest: false, show: false, stud: false },
+    { seq: 17, title: '我的簽核', title_en: 'Approval', value: 7, page: 'view/mySignPage.htm?20220420', guest: false, show: true, stud: false },
+    { seq: 90, title: '電子報', title_en: '', value: 8, page: 'view/messageListPage.htm', guest: false, show: false, stud: false },
+    { seq: 91, title: '院系公告/活動', title_en: 'Announcements/Activities of Unit', value: 11, page: 'view/messageListPage.htm?20221107c', guest: false, show: false, stud: true },
+    { seq: 92, title: '單位活動/公告', title_en: 'Announcements/Activities of Unit', value: 12, page: 'view/messageListPage.htm?20221107c', guest: false, show: true, stud: false },
+    { seq: 93, title: '全校活動', title_en: 'Activities', value: 10, page: 'view/messageListPage.htm?20221107c', guest: false, show: true, stud: true },
+    { seq: 95, title: '全校公告', title_en: 'Announcements', value: 9, page: 'view/messageListPage.htm?20221107c', guest: false, show: true, stud: true },
+    { seq: 96, title: 'COVID-19公告', title_en: 'COVID-19', value: 13, page: 'view/messageListPage.htm?20221107c', guest: false, show: true, stud: true }
+];
+
+appConfig.msg_views_m = [
+    { seq: 25, title: '來文函轉', title_en: 'Communication Letter', value: 0, page: 'view/messageListPage_m.htm', guest: true, show: false, stud: false },
+    { seq: 30, title: '單位訊息', title_en: '', value: 1, page: 'view/messageListPage_m.htm', guest: false, show: false, stud: false },
+    { seq: 40, title: '我的訂閱', title_en: '', value: 2, page: 'view/messageListPage_m.htm', guest: false, show: false, stud: false },
+    { seq: 50, title: '我的收藏', title_en: '', value: 3, page: 'view/messageListPage_m.htm', guest: false, show: false, stud: false },
+    { seq: 20, title: '活動訊息', title_en: 'Activities', value: 4, page: 'view/listByDatePage_m.htm', guest: false, show: true, stud: true },
+    { seq: 10, title: '我的通知', title_en: 'Notes', value: 5, page: 'view/myMessagePage_m.htm', guest: false, show: true, stud: true },
+    { seq: 15, title: '本週最新', title_en: 'Latest News', value: 6, page: 'view/messageListPage.htm', guest: false, show: false, stud: false },
+    { seq: 17, title: '我的簽核', title_en: 'Approval', value: 7, page: 'view/mySignPage.htm', guest: false, show: true, stud: false },
+    { seq: 90, title: '電子報', title_en: '', value: 8, page: 'view/messageListPage.htm', guest: false, show: false, stud: false },
+    { seq: 95, title: '公告訊息', title_en: 'Announcements', value: 9, page: 'view/messageListPage_m.htm', guest: false, show: true, stud: false }
+];

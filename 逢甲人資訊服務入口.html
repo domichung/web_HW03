@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)https://myfcu.fcu.edu.tw/main/infomyfculogin.aspx -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style><title>
+	逢甲人資訊服務入口
+</title>
+    
+    <!--[if lt IE 10]>
+        <meta http-equiv="refresh" content="0;url=/ie8/" />
+    <![endif]-->   
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!--
+    <link href="css/Login.css" rel="stylesheet" type="text/css" /> 
+    -->
+    <script type="text/javascript">
+        var lang = 'cht';
+        var isPostBack = "False";
+    </script>    
+    
+    <link rel="shortcut icon" href="https://myfcu.fcu.edu.tw/main/Image/main/myfcu_favicon.png"><link rel="icon" href="https://myfcu.fcu.edu.tw/main/Image/main/myfcu_favicon.png"><link rel="Bookmark" href="https://myfcu.fcu.edu.tw/main/Image/main/myfcu_favicon.png"><link href="./逢甲人資訊服務入口_files/reset.css" rel="stylesheet" type="text/css"><link href="./逢甲人資訊服務入口_files/S990902.min.css" rel="stylesheet" type="text/css"><link href="./逢甲人資訊服務入口_files/MyFcuLogin.css" rel="stylesheet" type="text/css"> 
+    
+
+
+    
+    
+    <script src="./逢甲人資訊服務入口_files/angular.min.js.下載" type="text/javascript"></script>
+    <script src="./逢甲人資訊服務入口_files/jquery-3.6.0.js.下載" type="text/javascript"></script>
+    <script src="./逢甲人資訊服務入口_files/InfoMyFcuLogin.js.下載" type="text/javascript"></script>   
+
+    </head>
+
+    <body onload="onLoginLoaded()" ng-app="loginApp" ng-controller="loginCtrl" class="ng-scope">
+    <span id="statusMsg" clsss="displaynone"></span>
+    <table class="table-root">
+        <tbody><tr>
+            <td>
+                <div id="div_topbar">
+                    <div id="div_myfcuicon">
+                        
+                        <div id="div_myfcuicon1">
+                        </div>
+                        <div id="div_myfcuicon2">
+                            <img src="./逢甲人資訊服務入口_files/logo_03.png" height="40">
+                        </div>
+                    </div>
+                    <div id="div_topbar_right">
+                        <div class="barbtn barbtn_size" onclick="lbLang.click()">
+                            <div class="barbtn_text ng-binding" ng-bind="lang_text">ENGLISH</div>
+                        </div>
+                        <div ng-click="switchBalloon()" class="barbtn barbtn_size">
+                            <div class="barbtn_text ng-binding" ng-bind="login_text">登入</div>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- Balloon -->
+                <div ng-class="{&#39;div-Balloon&#39;:true, &#39;div-Balloon-hide&#39;:(showBalloon==null || !showBalloon) }" class="div-Balloon">
+                    <div class="arrow">
+                    </div>
+                    <h3 ng-bind="login_text" class="ng-binding">登入</h3>
+                    <div id="loginFormDialog">
+                        <form name="frmLogin" method="post" action="https://myfcu.fcu.edu.tw/main/infomyfculogin.aspx" id="frmLogin" class="ng-pristine ng-valid">
+<div>
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" autocomplete="off">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" autocomplete="off">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" autocomplete="off">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE3ODg1OTkyNzkPFgIeDElzTWFzdGVyUGFnZWQWAgIFD2QWAgIFD2QWAmYPZBYOAgEPDxYCHgRUZXh0BQs8VFJBPueUqOaItmRkAgUPDxYCHwEFBuWvhueivGRkAgkPDxYCHwEFCeizh+aWmeW6q2RkAgsPEGQPFgFmFgEQBQtNSVNEQlNFUlZFUgULTUlTREJTRVJWRVJnFgFmZAINDxAPFgIfAQUM6KiY5L2P5a+G56K8ZGRkZAIbDw8WAh8BBQbmlrnmoYhkZAIdDxAPFgIeDEF1dG9Qb3N0QmFja2hkDxYDZgIBAgIWAxAFB0ZjdUFwcHMFB0ZjdUFwcHNnEAUIRmN1RUFwcHMFCEZjdUVBcHBzZxAFCUZjdVB0QXBwcwUJRmN1UHRBcHBzZxYBZmRkDnGuG4+8h98srDe3JAJ+8qz9l8g=" autocomplete="off">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['frmLogin'];
+if (!theForm) {
+    theForm = document.frmLogin;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./逢甲人資訊服務入口_files/WebResource.axd" type="text/javascript"></script>
+
+
+<script src="./逢甲人資訊服務入口_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="./逢甲人資訊服務入口_files/ScriptResource(1).axd" type="text/javascript"></script>
+<script src="./逢甲人資訊服務入口_files/WebResource(1).axd" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="49CFD8FD" autocomplete="off">
+	<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0" autocomplete="off">
+	<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0" autocomplete="off">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAZC53xHcZfJOzTLY/AU26kYN2c1/z4pBzJOnns4bAyLXmN6ZYJNGAQHn0c9zMgZU3B2NvjHOkq5wKoqN6Aim8WGukh2By2ryL+kBB6GbCSWUbGyBkXbV2sDtox5qDR0mR6I9JIYOznVX4hO3mx/lyb4w6BroA==" autocomplete="off">
+</div>
+                            <a id="lbLang" class="displaynone" href="javascript:__doPostBack(&#39;lbLang&#39;,&#39;&#39;)" style="font-size:11px;">English</a>
+                            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ScriptManager1', 'frmLogin', ['tUpdatePanel1',''], ['OKButton',''], [], 90, '');
+//]]>
+</script>
+
+                            <div id="UpdatePanel1">
+	
+                                    <div id="inhalt">
+                                        <table id="mainTable" border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                
+                                                <tr>
+                                                    <td id="td11" colspan="3">
+                                                        <div id="layer1">
+                                                            <table width="100%">
+                                                                <tbody><tr>
+                                                                <td "=""></td>
+                                                                <td align="center">
+                                                                <table id="contenttable">
+                                                             <tbody><tr height="20%"><td colspan="2" align="right" valign="top"> 
+                                                                 
+                                                                 
+                                                                    </td></tr>
+                                                            <tr height="16%">
+                                                                <td class="labelContainer">
+                                                                    <span id="lbUser" class="label"><tra>用戶</tra></span>
+                                                                </td>
+                                                                <td> 
+                                                                    <input name="txtUserName" type="text" value="001" id="txtUserName" class="input" charactercasing="Upper" onblur="GetPwdAndChk()" onchange="SetEngBtnDisplay()" ng-focus="txtUserNameFocus">
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="16%">
+                                                                <td class="labelContainer">
+                                                                    <span id="lbPassword" class="label">密碼</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input name="txtPassword" type="password" id="txtPassword" class="input">
+                                                                    
+                                                                    
+                                                                </td>
+                                                            </tr>
+                                                            <tr height="5%">
+                                                                <td colspan="2" align="center">
+                                                                    
+                                                                    
+                                                                        <input type="hidden" name="csrf_token" id="csrf_token" value="b758a03db70546088448a10c9f3335b6" autocomplete="off">
+                                                                        <input type="submit" name="OKButton" value="login" onclick="SetPwdAndChk();" id="OKButton" class="btn">
+                                                                        
+                                                                            
+                                                                    </td>
+
+                                                            </tr>
+                                                                    <tr height="5%" class="smalltext">
+                                                                            <td align="center" colspan="2">
+                                                                                <u><a id="HyperLink4" ng-bind="first_use" rel="noopener noreferrer" href="https://netid.fcu.edu.tw/" target="_blank" class="ng-binding">第一次使用請先啟用NID</a></u>
+                                                                                <br>
+                                                                                <u><a id="HyperLink3" ng-bind="forget_password" rel="noopener noreferrer" href="https://netid.fcu.edu.tw/" target="_blank" class="ng-binding">忘記密碼?</a></u>
+                                                                            </td>
+                                                                    </tr>
+                                                                    <tr class="smalltext">
+                                                                        
+                                                                        <td colspan="2" height="2px">
+                                                                            <span id="FailureText"></span>
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        </tr><tr height="16%" class="smalltext">
+                                                                            <td colspan="2" width="100%">
+                                                                                <table width="100%" class="smalltext">
+                                                                                    <tbody><tr>
+                                                                                        <td align="left" colspan="2" width="67%" valign="bottom">
+                                                                                            <img alt="midlogo" height="26" src="./逢甲人資訊服務入口_files/nid.gif" width="56"><span>&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                                                                            <a id="HyperLink1" rel="noopener noreferrer" href="https://netid.fcu.edu.tw/" target="_blank">NID authentication now</a>
+                                                                                            </span><span>&nbsp;&nbsp;&nbsp;&nbsp; </span></td>
+                                                                                        <td align="right" width="33%" valign="bottom">
+                                                                                            <a id="HyperLink2" ng-bind="privacy_policy" rel="noopener noreferrer" href="https://www.fcu.edu.tw/privacystatement/" target="_blank" class="ng-binding">隱私權聲明</a>
+                                                                                            
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody></table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    
+                                                            
+                                                            </tbody></table>
+                                                            </td>
+                                                                </tr>
+                                                            </tbody></table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                
+</div>
+                            
+                            
+                            <span id="WebMultiLanguage1"></span>
+                        
+
+<script type="text/javascript">
+//<![CDATA[
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+WebForm_AutoFocus('OKButton');//]]>
+</script>
+</form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr ng-click="hideBalloon()">
+            <td class="td-main">
+                <div class="div-main div-maina">
+                    <iframe id="iframe1" height="100%" width="100%" src="./逢甲人資訊服務入口_files/S9901_BannerHomePage.html" frameborder="0"></iframe>
+
+                </div>
+            </td>
+        </tr>
+    </tbody></table>
+    
+    
+
+<link id="__Page" rel="stylesheet" type="text/css"></body></html>

@@ -1,0 +1,823 @@
+﻿html
+{
+	height:100%;
+}
+body 
+{
+	/*background-color:#E7EFFF;*/
+	margin:0;
+	padding:0;
+	height:100%;
+	overflow:hidden;
+}
+div,input
+{
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+img
+{
+	-webkit-user-select: none;
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+}
+
+table.table-root
+{
+	border-spacing:0;
+	/*border:solid 1px black;*/
+	padding:0;
+	margin:0;
+	height:100%;
+	width:100%;
+}
+
+table.table-root tr td
+{
+	padding:0;
+	margin:0;
+}
+
+td.td-menu
+{
+	/*width:270px;*/
+	height:100%;
+	/*background-color:#53616F;*/
+	vertical-align:top;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#FAAE74+0,F28481+100 */
+	/* background: #FAAE74; /* Old browsers */
+	/* background: -moz-linear-gradient(top, #FAAE74 0%, #F28481 100%); /* FF3.6-15 */
+	/* background: -webkit-linear-gradient(top, #FAAE74 0%,#F28481 100%); /* Chrome10-25,Safari5.1-6 */
+	/* background: linear-gradient(to bottom, #FAAE74 0%,#F28481 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FAAE74', endColorstr='#F28481',GradientType=0 ); /* IE6-9 */
+}
+
+td.td-menu-hide
+{
+    display:none;
+}
+
+td.td-main
+{
+	/*width:100%;*/
+	height:100%;
+	vertical-align:top;
+}
+
+div.div-menu
+{
+	/*background-color:#53616F;*/
+	/*padding:10px 10px 0 10px;*/
+	height:100%;
+	width:270px;
+	position: relative;
+	margin-left:0;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#FAAE74+0,F28481+100 */
+	/* background: #FAAE74; /* Old browsers */
+	/* background: -moz-linear-gradient(top, #FAAE74 0%, #F28481 100%); /* FF3.6-15 */
+	/* background: -webkit-linear-gradient(top, #FAAE74 0%,#F28481 100%); /* Chrome10-25,Safari5.1-6 */
+	/* background: linear-gradient(to bottom, #FAAE74 0%,#F28481 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FAAE74', endColorstr='#F28481',GradientType=0 ); /* IE6-9 */
+	background-color:#e9e9e2;
+}
+
+div.div-main
+{
+	z-index: 0;
+	padding:0px;
+	height:100%;
+	width:100%;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -ms-overflow-y:hidden;
+}
+
+.btn-menu-hide
+{
+	top:5px;
+	right:5px;
+	text-align:center;
+	position:absolute;
+	z-index:1000;
+}
+
+div.div-menu-hide-onload
+{
+	margin-left:-271px;
+	z-index: 200;
+}
+
+div.div-menu-show
+{
+	/*
+	animation: menu-show 0.4s ease;
+	-moz-animation: menu-show 0.4s ease;	/* Firefox *
+	-webkit-animation: menu-show 0.4s ease;	/* Safari 和 Chrome *
+	-o-animation: menu-show 0.4s ease;	/* Opera *
+	margin-left:0 !important;
+	*/
+	transition: -webkit-transform 0.4s ease;
+	-webkit-transform: translate3d(271px,0,0);
+}
+
+div.div-menu-hide
+{
+	/*
+	animation: menu-hide 0.4s ease;
+	-moz-animation: menu-hide 0.4s ease;	/* Firefox *
+	-webkit-animation: menu-hide 0.4s ease;	/* Safari 和 Chrome *
+	-o-animation: menu-hide 0.4s ease;	/* Opera *
+	margin-left:-271px;
+	*/
+	transition: -webkit-transform 0.4s ease;
+	-webkit-transform: translate3d(0,0,0);
+}
+
+td.td-menu-show
+{
+	
+	animation: td-menu-show 0.4s ease;
+	-moz-animation: td-menu-show 0.4s ease;	/* Firefox */
+	-webkit-animation: td-menu-show 0.4s ease;	/* Safari 和 Chrome */
+	-o-animation: td-menu-show 0.4s ease;	/* Opera */
+	width: 270px;
+
+}
+
+td.td-menu-hide
+{
+	animation: td-menu-hide 0.4s ease;
+	-moz-animation: td-menu-hide 0.4s ease;	/* Firefox */
+	-webkit-animation: td-menu-hide 0.4s ease;	/* Safari 和 Chrome */
+	-o-animation: td-menu-hide 0.4s ease;	/* Opera */
+	width: 0px;
+}
+
+div#div_menu_cover{
+	height: 100%;
+    width: 100%;
+    z-index: 500;
+    /*background-color: #35618d;*/
+    background-color: #e9e9e2;
+    position: absolute;
+    top: 0;
+    right: 0;
+    visibility:hidden;
+}
+
+div.div-menu-show #div_menu_cover
+{
+	animation: menu-show-content 0.4s ease;
+	-moz-animation: menu-show-content 0.4s ease;	/* Firefox */
+	-webkit-animation: menu-show-content 0.4s ease;	/* Safari 和 Chrome */
+	-o-animation: menu-show-content 0.4s ease;	/* Opera */
+	visibility:hidden;
+}
+
+div.div-menu-hide #div_menu_cover
+{
+	animation: menu-hide-content 0.3s ease;
+	-moz-animation: menu-hide-content 0.3s ease;	/* Firefox */
+	-webkit-animation: menu-hide-content 0.3s ease;	/* Safari 和 Chrome */
+	-o-animation: menu-hide-content 0.3s ease;	/* Opera */
+	visibility:visible;
+}
+
+div.icon-block
+{
+	margin:4px 6px;
+	background-color:#7b98aa;
+	/*border:Solid 1px #B3B3B3;*/
+	/*border:Solid 1px Transparent;*/
+	width:70px;
+	height:70px;
+	cursor:pointer;
+	color:White;
+	/*padding:10px;*/
+	text-align:center;
+	border-radius:15px;
+	position:relative;
+	/*overflow:hidden;*/
+	-webkit-user-select: none;
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+}
+
+div.icon-block.en
+{
+	width:140px;
+	height:70px;
+}
+
+div.icon-block:hover
+{
+	margin:3px 5px;
+	width:72px;
+	height:72px;
+	/*border:Solid 1px #bbb;*/
+	/*border:Solid 1px Transparent;*/
+	/*box-shadow:rgba(0,0,0,.7) 0 0 3px;*/
+}
+
+div.icon-block.en:hover
+{
+	width:142px;
+}
+
+div.icon-block img
+{
+	width:65%;
+	position:relative;
+	top:50%;
+	margin-top:-21px;
+}
+
+div.icon-block.text
+{
+	font-size:24px;
+	line-height:26px;
+	font-weight:bold;
+	padding:10px;
+}
+
+div.icon-block.text.en
+{
+	font-size:20px;
+	padding:10px 3px;
+}
+
+div.icon-block.text.en.inline
+{
+	line-height:50px;
+	text-align:center;
+}
+
+/* begin icon block colors */
+div.block-color1
+{
+	background-color:#98C5B3 !important;
+}
+
+div.block-color2
+{
+	background-color:#BDA891 !important;
+}
+
+div.block-color3
+{
+	background-color:#E67F7C !important;
+}
+
+div.block-color4
+{
+	background-color:#8A83AD !important;
+}
+
+div.block-color5
+{
+	background-color:#408EB1 !important;
+}
+
+/* end icon block colors */
+
+table.table-items
+{
+	border-spacing:0;
+	margin:0;
+	width:100%;
+	height:84px;
+	/*color: #C3C3C3;*/
+	color:#666;
+	padding-bottom:5px;
+}
+
+table.table-items:hover
+{
+	background-color:rgba(0,0,0,.1);
+	/*color:White;*/
+}
+
+table.table-items ul li a:hover
+{
+	color:White;
+	cursor:pointer;
+}
+
+input.btn
+{
+	background-color:#e3e7ea;
+	border:solid 1px #9BA8B5;
+	padding:2px 5px 2px 5px;
+	/*margin:2px;*/
+	line-height:1em;
+	cursor:pointer;
+	height:24px;
+	vertical-align:bottom;
+}
+
+input.btn:hover
+{
+	background-color:#cdd3da;
+	border:solid 1px #e3e7ea;
+}
+
+input.btn-dark
+{
+	background-color:#7E8E9F;
+	border:solid 1px #B3B3B3;
+	padding:2px 5px 2px 5px;
+	/*margin:2px;*/
+	line-height:1em;
+	cursor:pointer;
+	height:24px;
+	vertical-align:bottom;
+}
+
+input.btn-dark:hover
+{
+	background-color:#9BA8B5;
+	border:solid 1px #CDCDCD;
+}
+
+div#div_blkview
+{
+	width:100%;
+	height:100%;
+	/*background-color:#E7EFFF;*/
+	padding:1em;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+div#div_blkview h2
+{
+	color:#888;
+	text-indent:1em;
+}
+
+div.cardview
+{
+	margin-left:1.5em;
+	margin-right:60px;
+}
+
+div.cardview1
+{
+    margin-left:1.5em;
+	margin-right:60px;
+	max-width:612px; 
+	text-align:left; 
+	margin:auto;
+}
+
+div.div-card
+{
+	display: inline-block;
+	padding:5px;
+	margin:5px;
+	/*border:solid 1px #CDCDCD;*/
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width:92px;
+    height:140px;
+    vertical-align:top;
+}
+
+div.div-cardh
+{
+    height:120px;
+}
+
+div.div-card p
+{
+	margin-top:3px;
+	margin-left:2px;
+	color:#888;
+	font-size:0.8em;
+	text-align:center;
+}
+
+span.tag
+{
+	margin: 5px;
+	padding: 3px 17px;
+	background-color: #CEEFFF;
+	border: solid 1px #82D6FF;
+	border-radius: 12px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+span.tag:hover
+{
+	background-color: #B5E7FF;
+	border-color: #69CEFF;
+}
+
+input[type=text]
+{
+	border:solid 1px gray;
+	padding: 2px 5px 2px 5px;
+    /*margin: 2px;*/
+    height:24px;
+    vertical-align:bottom;
+}
+
+div.div-Balloon
+{
+	background-color: white;
+    position: absolute;
+    width: 134px;
+    /*height: 154px;*/
+    margin-top: 10px;
+    padding:10px;
+    z-index: 1000;
+    border: solid 1px #aaa;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    top:55px;
+    right:5px;
+}
+
+
+div.div-Balloon-hide
+{
+	display:none;
+}
+
+div.div-Balloon .arrow
+{
+	right:8px;
+	border-top-width:0;
+	border-bottom-color:gray;
+	/*border-bottom-color: rgba(0, 0, 0, 0.25);*/
+	border-width: 11px;
+	top:-22px;
+}
+
+.div-Balloon .arrow, .div-Balloon .arrow:after
+{
+	position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.div-Balloon .arrow:after
+{
+	top: -9px;
+    margin-left: -10px;
+    border-top-width: 0;
+	border-bottom-color: #ffffff;
+	border-width: 10px;
+	content: "";
+}
+
+.arrow-left
+{
+    left:8px;
+}
+
+.search-width
+{
+    width:100%;
+}
+
+.barbtn
+{
+	/*background-color:rgba(0,0,0,.1);*/
+	cursor:pointer;
+	height:50px;
+	width:50px;
+	
+}
+
+.menuballoon
+{
+    padding:10px;
+}
+
+.div_lang
+{
+    width:inherit;
+    height:50px;
+}
+
+.div_lang1
+{
+    height:20px;
+    margin:15px 10px;
+    color:White;
+    text-align:center;
+    font-weight:bold;
+}
+
+/*.barbtn>img
+{
+	width:20px;
+	height:20px;
+	margin:15px;
+}*/
+
+.barbtn:hover
+{
+	background-color:rgba(0,0,0,.1);
+}
+
+.div-main-cover2
+{
+	height:100%;
+	width:100%;
+	background-color:rgba(0,0,0,.3);
+	z-index:300;
+	position:fixed;
+}
+
+.cubebtn
+{
+	height:54px;
+	width:54px;
+	padding:13px;
+	/*margin:4px;*/
+	/*border-radius:3px;*/
+	border-radius:50%;
+	cursor:pointer;
+	box-shadow: 0 0 10px rgba(0,0,0,.5);
+	margin-top:10px;
+	text-align:center;
+}
+
+.add-fav-icon
+{
+	
+}
+
+li.menu-text,li.menu-text>a>div
+{
+	white-space: nowrap;
+    overflow: hidden;
+    width: 164px;
+    text-overflow: ellipsis;
+}
+
+li.menu-text>a,li.menu-text>a:active,li.menu-text>a:visited
+{
+	color:#666;
+}
+
+div.flowbox
+{
+	/*background-color: white;*/
+    position: fixed;
+    /*margin-top: 10px;*/
+    /*padding:3px;*/
+    z-index: 90;
+    /*border: solid 1px #aaa;*/
+    /*box-shadow: 0 0 10px rgba(0,0,0,.5);*/
+    /*top:110px;*/
+    bottom:60px;
+    right:13px;
+    /*-webkit-transform: translate3d(0,0,90);*/
+    border-radius:50%;
+}
+
+div.hide-subs-view
+{
+	display:none !important;
+}
+
+#div_topbar
+{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#faae74+0,f28481+100 */
+	background: #faae74; /* Old browsers */
+	background: -moz-linear-gradient(left,  #faae74 0%, #f28481 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  #faae74 0%,#f28481 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  #faae74 0%,#f28481 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faae74', endColorstr='#f28481',GradientType=1 ); /* IE6-9 */
+	height:50px;
+	z-index:300;
+	position:relative;
+	background-color:#eeeeef;
+}
+
+#div_menu_bottom
+{
+	text-align:center;
+	padding:5px;
+	font-weight:bold;
+	color:#666;
+}
+
+#div_menu_bottom:hover
+{
+	background-color:rgba(0,0,0,.1);
+	cursor:pointer;
+	/*color:White;*/
+}
+
+/* smooth show */
+div.icon-block, img[onerror], .div-main-cover
+{
+	animation: smooth-show 0.4s ease;
+	-moz-animation: smooth-show 0.4s ease;	/* Firefox */
+	-webkit-animation: smooth-show 0.4s ease;	/* Safari 和 Chrome */
+	-o-animation: smooth-show 0.4s ease;	/* Opera */
+}
+
+/* flowbox */
+.cubebtn.flowbox-open
+{
+	/*animation: flowbox-open 0.5s ease-out;
+	-moz-animation: flowbox-open 0.5s ease-out;	/* Firefox *
+	-webkit-animation: flowbox-open 0.5s ease-out;	/* Safari 和 Chrome *
+	-o-animation: flowbox-open 0.5s ease-out;	/* Opera */
+}
+
+.cubebtn img.gear-open 
+{
+	animation: counterclockwise 0.5s ease-out;
+	-moz-animation: counterclockwise 0.5s ease-out;	/* Firefox */
+	-webkit-animation: counterclockwise 0.5s ease-out;	/* Safari 和 Chrome */
+	-o-animation: counterclockwise 0.5s ease-out;	/* Opera */
+}
+
+.cubebtn img.gear-close
+{
+	animation: clockwise 0.5s ease-out;
+	-moz-animation: clockwise 0.5s ease-out;	/* Firefox */
+	-webkit-animation: clockwise 0.5s ease-out;	/* Safari 和 Chrome */
+	-o-animation: clockwise 0.5s ease-out;	/* Opera */
+}
+
+.div1
+{
+    position:absolute; 
+    display:box; 
+    display:-webkit-box; 
+    flex-flow:row wrap; 
+    display:-webkit-flex; 
+    -webkit-flex-flow:row wrap; 
+    display:flex;
+}
+
+.divright
+{
+    right:0; 
+}
+
+.img1
+{
+    height:22px; 
+    width:22px; 
+    margin:4px;
+}
+
+#div_user
+{
+    color:White; 
+    display:table-cell; 
+    vertical-align:middle; 
+    padding:0 1em; 
+    line-height:50px
+}
+
+.img_home
+{
+    height:24px; 
+    width:24px; 
+    margin:13px;
+}
+
+#serch_form_
+{
+    vertical-align:middle;
+    padding:10px 7px 10px 8px;
+}
+
+.circle
+{
+    padding:5px; 
+    height:48px; 
+    width:48px; 
+    margin:auto;
+}
+
+.div-Balloon-menu
+{
+    display:flex; 
+    flex-flow:row wrap; 
+    display:-webkit-flex; 
+    -webkit-flex-flow:row wrap;
+}
+
+#logout_btn
+{
+    background-color:#B00000;
+    width:48px;
+    height:48px;
+    padding:10px;
+    margin:4px;
+    border-radius:3px;    
+}
+
+#agent_btn
+{
+    background-color:#1BACE3;
+    width:48px;
+    height:48px;
+    padding:10px;
+    margin:4px;
+    border-radius:3px;
+}
+
+#agent_exit_btn
+{
+    background-color:#FC4F13;
+    width:48px;
+    height:48px;
+    padding:10px;
+    margin:4px;
+    border-radius:3px;
+}
+
+#link_chgpw
+{
+    margin:4px;
+    border-radius:3px;
+}
+
+#pt_chgpw_btn
+{
+    background-color:#1BACE3;
+    width:48px;
+    height:48px;
+    padding:10px;
+    border-radius:3px;
+}
+
+/*
+#serch_form
+{
+    vertical-align:middle;
+    padding:10px 10px 5px 10px;
+    height:24px;
+}
+*/
+
+#div_search_form
+{
+    height:39px;
+}
+
+#text_search
+{
+    width:160px;
+}
+
+#div_agent_name
+{
+    vertical-align:middle;
+    padding:10px 10px 5px 10px;
+    height:39px;
+}
+
+#div_agent
+{
+    padding:5px 10px 5px 10px; 
+    height:24px; 
+    box-sizing:initial; 
+    vertical-align:middle; 
+    display:table-cell;
+}
+
+#div_menu_view
+{
+    padding:0 10px;
+}
+
+#div_main_cover
+{
+    display:none;
+}
+
+#div_main
+{
+    width:100%;
+}
+
+#div_main_include
+{
+    width:100%; 
+    height:100%; 
+    overflow-y:auto;
+    -ms-overflow-y:hidden; 
+    -webkit-overflow-scrolling: touch;
+}
+

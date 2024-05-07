@@ -1,0 +1,249 @@
+﻿//var lang = '<%=lang %>';
+
+function onLoginLoaded() {
+    if (isPostBack == "False") {
+        GetLastUser();
+        //GetLastDBSolution();
+    }
+    //console.log(lang);
+    SetEngBtnDisplay();
+}
+
+//var isPostBack = "<%= IsPostBack %>";
+function getCookieVal(offset) {
+    var endstr = document.cookie.indexOf(";", offset);
+    if (endstr == -1)
+        endstr = document.cookie.length;
+    return unescape(document.cookie.substring(offset, endstr));
+}
+
+function GetCookie(name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var clen = document.cookie.length;
+    var i = 0;
+    while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg)
+            return getCookieVal(j);
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0) break;
+    }
+    return null;
+}
+
+function SetCookie(name, value, expires) {
+    var argv = SetCookie.arguments;
+    var argc = SetCookie.arguments.length;
+
+    var expires = (argc > 2) ? argv[2] : null;
+    var path = (argc > 3) ? argv[3] : null;
+    var domain = (argc > 4) ? argv[4] : null;
+    var secure = (argc > 5) ? argv[5] : false;
+    document.cookie = name + "=" + escape(value) +
+            ((expires == null) ? "" : ("; expires=" + expires.toGMTString())) +     //
+            ((path == null) ? "" : ("; path=" + path)) +
+            ((domain == null) ? "" : ("; domain=" + domain)) +
+            ((secure == true) ? "; secure" : "");
+}
+
+function ResetCookie() {
+    var usr = document.getElementById('txtUserName').value;
+    var expdate = new Date()
+
+    SetCookie(usr, null, expdate);
+}
+
+function GetPwdAndChk() {
+    var usr = document.getElementById('txtUserName').value;
+    var pwd = GetCookie(usr);
+
+    if (pwd != null) {
+        //janne mark document.getElementById('chkRememberPwd').checked = true;
+        document.getElementById('txtPassword').value = pwd;
+    }
+    else {
+        //janne mark document.getElementById('chkRememberPwd').checked = false;
+        document.getElementById('txtPassword').value = "";
+    }
+}
+
+function SetPwdAndChk() {
+    var usr = document.getElementById('txtUserName').value;
+    SetLastUser(usr);
+
+    //janne mark if (document.getElementById('chkRememberPwd').checked == true) {
+    //janne mark    var pwd = document.getElementById('txtPassword').value;
+
+    //janne mark    var expdate = new Date()
+    //janne mark    expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000))
+
+    //janne mark    SetCookie(usr, pwd, expdate);
+    //janne mark}
+    //janne mark else {
+    ResetCookie();
+    //janne mark } 
+
+    //var db = document.getElementById('ddlDataBase').value;
+    //var sol = document.getElementById('ddlSolution').value;
+    //SetLastDBSolution(db, sol)
+
+}
+
+
+
+function GetLastUser() {
+    var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";
+    var usr = GetCookie(id);
+    if (usr != null) {
+        document.getElementById('txtUserName').value = usr;
+    }
+    else {
+        document.getElementById('txtUserName').value = "";
+    }
+
+    GetPwdAndChk();
+}
+
+function SetLastUser(usr) {
+    var id = "49BAC005-7D5B-4231-8CEA-16939BEACD67";
+
+    var expdate = new Date()
+    expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000))
+
+    SetCookie(id, usr, expdate);
+}
+
+function GetLastDBSolution() {
+    var did = "2BCD80435-67EA-B52D-9E10-234EB74D1A165DCA";
+    var db = GetCookie(did);
+
+    if (db != null) {
+        document.getElementById('ddlDataBase').value = "MISDBSERVER";
+    }
+    else {
+
+    }
+    var sid = "B2380ACE1-3B7A-E1D0-79AC-4512BAC397DB486D";
+    var sol = GetCookie(sid);
+    if (sol != null) {
+        document.getElementById('ddlSolution').value = "FcuApps";
+    }
+    else {
+
+    }
+}
+
+function SetLastDBSolution(db, sol) {
+    var did = "2BCD80435-67EA-B52D-9E10-234EB74D1A165DCA";
+    var sid = "B2380ACE1-3B7A-E1D0-79AC-4512BAC397DB486D";
+    var expdate = new Date()
+    expdate.setTime(expdate.getTime() + 14 * (24 * 60 * 60 * 1000))
+
+    SetCookie(did, db, expdate);
+    SetCookie(sid, sol, expdate);
+}
+
+function btnMouseOver(buttonname) {
+    var btn = document.getElementById('btn' + buttonname + 'Container');
+    btn.style.backgroundImage = "url('Image/login/btn" + buttonname + "_over.gif')";
+}
+
+function btnMouseOut(buttonname) {
+    var btn = document.getElementById('btn' + buttonname + 'Container');
+    btn.style.backgroundImage = "url('Image/login/btn" + buttonname + ".gif')";
+}
+
+function SetEngBtnDisplay() {
+    var btn = document.getElementById('lbLang');
+    var txtUser = document.getElementById('txtUserName');
+    if (txtUser.value.length > 6) {
+        btn.style.visibility = "";
+        SetLastUser(txtUser.value);
+    } else {
+        btn.style.visibility = "hidden";
+    }
+}
+
+function setMenuHeight() {
+    //var _dtop = $('#div_menu_view').offset().top;
+    //var _mbh = $('#div_menu_bottom').outerHeight();
+    //var _cheight = document.body.clientHeight;
+    var _cheight = window.innerHeight;
+    var _barheight = $('#div_topbar').height();
+
+    $('.div-main').css('height', _cheight - (_barheight ? _barheight : 0) + 'px');
+    //$('.div-main>iframe').css('height', _cheight - (_barheight ? _barheight : 0) + 'px');
+    //console.log($('.div-main').height());
+
+}
+
+setMenuHeight();
+
+$(window).resize(function() {
+    setMenuHeight();
+});
+
+var urlhash = window.location.hash;
+if (urlhash) {
+    window.sessionStorage["myfcu_hash"] = urlhash.replace('#', '');
+}
+
+var loginApp = angular.module("loginApp", []);
+(function(app) {
+    "use strict";
+    app.controller("loginCtrl", function($scope, $timeout, $http) {
+        $scope.switchBalloon = function() {
+            if (!$scope.showBalloon) {
+                $scope.showBalloon = true;
+                //$scope.$apply();
+                //document.getElementById('txtUserName').select();
+                //$timeout(function() { document.getElementById('txtUserName').focus(); }, 0);
+            } else {
+                $scope.showBalloon = false;
+            }
+        };
+
+        $scope.hideBalloon = function() {
+            $scope.showBalloon = false;
+        };
+
+        $scope.$watch('showBalloon', function(newValue, oldValue) {
+
+            if (newValue) {
+                //console.log(newValue);
+                //document.getElementById('txtUserName').select();
+                //document.getElementById('txtUserName').focus();
+
+            }
+
+            $scope.txtUserNameFocus = newValue;
+        });
+
+        function _init() {
+            sessionStorage.setItem("MyFcuLoginPage", "InfoMyFcuLogin.aspx");
+
+            if (urlhash.length > 2) {
+                angular.element($('body')).scope().showBalloon = true;
+                var login_plz = lang == 'en' ? 'Please login to continue' : '請先登入以繼續';
+                $('#FailureText').text(login_plz);
+                if (!angular.element($('body')).scope().$$phase) {
+                    angular.element($('body')).scope().$apply();
+                }
+            }
+
+            $scope.NID_url = 'https://netid.fcu.edu.tw/';
+
+            $scope.login_text = lang == 'en' ? 'LOGIN' : '登入';
+            $scope.lang_text = lang == 'en' ? '正體中文' : 'ENGLISH';
+            $scope.privacy_policy = lang == 'en' ? 'privacy policy' : '隱私權聲明';
+            $scope.forget_password = lang == 'en' ? 'Forget password?' : '忘記密碼?';
+            $scope.first_use = lang == 'en' ? 'Please enable NID for the first time.' : '第一次使用請先啟用NID';
+            $scope.NID_url = lang == 'en' ? 'https://netid.fcu.edu.tw/index_e.aspx' : 'https://netid.fcu.edu.tw/';
+
+            $scope.switchBalloon(); //2020-6-9一進入首頁就顯示登入畫面
+        }
+
+        _init();
+    });
+})(loginApp);

@@ -1,0 +1,43 @@
+﻿#wrapper{
+	padding-top: 0px;
+	position: relative;
+	overflow: hidden;
+	margin: 0 auto;
+	/*height:180px;*/
+	/*border: 1px solid #666;*/
+	/*max-height:180px;*/
+	/*min-width:600px;*/
+}
+ul.pic{
+	position: absolute;
+	width: 15000px;
+}
+#wrapper h2,#wrapper h3{
+	cursor: pointer;
+	position: absolute;
+	top:220px;
+	z-index: 5;
+} 
+#wrapper h2{
+	right:auto;
+}
+ul.pic li{
+	float: left;
+}
+ul.page{
+	margin: 0 auto;
+	padding-top: 10px;
+}
+ul.page li{
+	float: left;
+	margin-right: 5px;
+	margin-left: 5px;
+	width: 10px;
+	height: 10px;
+	background-color: rgba(0,0,0,0.3);
+	border-radius: 5px;
+	cursor:pointer;
+}
+.DotColor{
+	background-color: rgba(0,0,0,0.6) !important;
+}

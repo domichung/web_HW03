@@ -1,0 +1,128 @@
+﻿div#inhalt
+{
+	padding:.5em;
+}
+
+table#mainTable
+{
+	width:100%;
+	text-align:center;
+}
+
+table#contenttable tr td
+{
+	padding-bottom:.5em;
+}
+
+input[type=text],input[type=password]
+{
+	border:solid 1px gray;
+	padding: 2px 5px 2px 5px;
+    /*margin: 2px;*/
+    height:24px;
+    vertical-align:bottom;
+}
+
+/*a
+{
+	color:#ddd;
+}*/
+
+span#FailureText
+{
+	color:Red;
+}
+
+.div-main iframe
+{
+	-webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+}
+#div_topbar
+{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#faae74+0,f28481+100 */
+    background: #faae74; /* Old browsers */
+    background: -moz-linear-gradient(left,  #faae74 0%, #f28481 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  #faae74 0%,#f28481 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  #faae74 0%,#f28481 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faae74', endColorstr='#f28481',GradientType=1 ); /* IE6-9 */
+}
+input.btn
+{
+	appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+}
+
+bady
+{
+    overflow:hidden;
+}
+
+.displaynone
+{
+    display:none;
+}
+
+div#div_topbar
+{
+    height:50px;
+    z-index:30;
+    position:relative;
+    background-color:#000;
+}
+
+div#div_myfcuicon
+{
+    position:absolute; display:box; display:-webkit-box; display:flex; flex-flow:row wrap; display:-webkit-flex; -webkit-flex-flow:row wrap;
+}
+
+div#div_myfcuicon1
+{
+    height:50px; width:50px;
+}
+
+div#div_myfcuicon2
+{
+    padding:5px;margin-left:10px;display: table-cell;
+}
+
+div#div_topbar_right
+{
+    position:relative; float:right; right:0; display:inline-flex;
+}
+
+div.barbtn_size
+{
+    width:inherit;height:50px;
+}
+
+div.barbtn_text
+{
+    height:20px;margin:15px 10px;color:White;text-align:center;font-weight:bold;
+}
+
+/*
+div.div-Balloon
+{
+    width:280px;height:260px;
+}
+*/
+
+
+div#layer1
+{
+    color: #666;
+}
+
+.smalltext
+{
+    font-size: 11px;
+}
+
+div.div-maina
+{
+    overflow-y:auto;
+    -ms-overflow-y:hidden; 
+    -webkit-overflow-scrolling: touch;
+}

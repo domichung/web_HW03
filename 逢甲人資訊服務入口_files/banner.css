@@ -1,0 +1,1339 @@
+
+
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><link href="images/capbear.ico" rel="shortcut icon" type="image/ico" /><meta name="description" content=" " /><meta name="keywords" content="示警,公開資料,開放資料,opendata,介接,推送,cap,alert,atom" /><meta name="author" content="NCDR" /><meta name="copyright" content="NCDR" /><meta id="IMAGE" property="og:image" /><title>
+	民生示警公開資料平台
+</title>
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="CSS/bootstrap.min.css" /><link rel="stylesheet" href="CSS/font-awesome.min.css" /><link href="CSS/basic.css" rel="stylesheet" type="text/css" /><link href="CSS/layout.css" rel="stylesheet" type="text/css" /><link href="CSS/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- 寬度小於768 -->
+    <link rel="stylesheet" media="screen and  (max-width: 768px)" href="CSS/Mobile.css" />
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="scripts/jquery.slim.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery-migrate.min.js"></script>
+    <script src="Scripts/popper.min.js"></script>
+    <!--Dropdowns , Tooltips用-->
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="Scripts/basic.js"></script>
+
+    <script type="text/javascript" src="scripts/jquery.fancybox-2.1.5/jquery.mousewheel-3.0.6.pack.js"></script>
+    <script type="text/javascript" src="scripts/jquery.fancybox-2.1.5/jquery.fancybox.js"></script>
+    <link rel="stylesheet" type="text/css" href="scripts/jquery.fancybox-2.1.5/jquery.fancybox.css" media="screen" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            //選單
+            $(".phone_menu").click(function () {
+                $(".phone_menu_close").show();
+                $(".CAP_memuBar").fadeIn(300);
+                //$("body").css({'overflow':'hidden'});  必殺技 沒事不要用
+
+            });
+
+            $(".phone_menu_close").click(function () {
+                $(".phone_menu").show();
+                $(".CAP_memuBar").fadeOut(300);
+                //$("body").css({'overflow':'auto'}); 必殺技 沒事不要用
+            });
+
+            //修正螢幕被拉大時menu不顯示的bug，使用$(window).width()取得目前遊覽器視窗寬度。
+            $(window).resize(function () {
+                wdth = $(window).width();
+                if (wdth > 760) { $(".CAP_memuBar").show(); } else if (wdth < 759) { $(".CAP_memuBar").hide(); }
+            });
+
+            //選單下拉
+            $(".CAP_memuBar  li").mouseover(function () {
+                $(this).find(".CAP_menu_sub").show();
+            }).mouseleave(function () {
+                $(this).find(".CAP_menu_sub").hide();
+            });
+            //用tab鍵開下拉
+            $(".CAP_memuBar ul  li >a").focus(function () {
+                $(".CAP_menu_sub").hide();
+                $(this).siblings(".CAP_menu_sub").show();
+            });
+            $(".accesskeyStyleCon").focus(function () {
+                $(".CAP_menu_sub").hide();
+            });
+
+
+            //文字大小切換	
+            $('.txtchange_S').click(function () {
+                $('.fontchange .txtchange').removeClass("sel");
+                $(this).addClass("sel");
+                $("body").css({ 'fontSize': '70%' });
+            });
+            $('.txtchange_M').click(function () {
+                $('.fontchange .txtchange').removeClass("sel");
+                $(this).addClass("sel");
+                $("body").css({ 'fontSize': '100%' });
+            });
+            $('.txtchange_L').click(function () {
+                $('.fontchange .txtchange').removeClass("sel");
+                $(this).addClass("sel");
+                $("body").css({ 'fontSize': '130%' });
+            });	
+
+            //  fancybox
+            $(".fancyIn").fancybox();
+            $(".fancyiframePage").fancybox({
+                padding: '0',
+                //margin: '0 , 20',
+                type: 'iframe',
+                autoSize: false,
+                width: '95%',
+                maxWidth:'650px',
+                height: 'auto',
+                minHeight: '400px'
+                // helpers: { overlay: { closeClick: false } }
+            });
+            $(".fancyiframePageMovie").fancybox({
+                padding: '0',
+                //margin: '0 , 20',
+                type: 'iframe',
+                autoSize: false,
+                width: '95%',
+                maxWidth:'580px',
+                height: 'auto',
+                minHeight: '355px',
+                scrolling: 'no'
+                // helpers: { overlay: { closeClick: false } }
+            });
+
+
+
+            $("#radioType_1").on("click", function () {
+                 setShow();
+            });
+            $("#radioType_0").on("click", function () {
+                 setDisable();
+            });           
+
+            //依照當前頁面來決定是否要顯示示警資料內容問題管理radio  -star
+           let PageVal =  $("#PageMangerType").val();
+            if (PageVal == "1") {
+                setDisable();
+            }
+            else {
+                setShow();
+            }
+            
+            //依照當前頁面來決定是否要顯示示警資料內容問題管理radio  -end
+
+
+            setDisable();
+
+            //註冊function -star
+            $("#dropType").change(function () { setCategoryVal(); });
+            $("#ddlCategory").change(saveddlCategoryVal());
+            //註冊function -end
+
+
+
+            //處理超連結沒有給tabindex的
+            $("a , input , select").each(function () {
+                if ($(this).attr("tabindex") == undefined) {
+                    $(this).attr("tabindex", 500);
+                }
+            })
+
+
+
+        });
+
+    </script>
+
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-71835214-1', 'auto');  // Replace with your property ID.
+        ga('send', 'pageview');
+
+    </script>
+    <!-- End Google Analytics -->
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5J9RJSTG');</script>
+    <!-- End Google Tag Manager -->
+
+    <script type="text/javascript">     
+
+        $(document).ready(function () {
+
+            $("#mastertbemail").blur(function () {
+                emailvers();
+            });
+        });
+        var remail = "/^" + $("#tbreg").val() + "/i";
+        function emailvers() {
+            var d = $("#mastertbemail").val();
+            if (d != "") {
+                if (remail.exec(d)) {
+                    return true;
+                } else {
+
+                    return false;
+                }
+            }
+            else {
+
+                return false;
+            }
+        }
+        function pwver() {
+            if ($("#mastertbpw").val() != "") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        function VerData() {
+            if (pwver()) {
+                if (emailvers()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
+        function ShowProgressBar() {
+            displayProgress();
+            displayMaskFrame();
+        }
+
+
+        function HideProgressBar() {
+            var progress = $('#dvhide');
+            var maskFrame = $("#dvmask");
+            progress.hide();
+            maskFrame.hide();
+        }
+
+        function displayProgress() {
+            var w = $(document).width();
+            var h = $(window).height();
+            var progress = $('#dvhide');
+            progress.css({ "z-index": 999999, "top": (h / 2) - (progress.height() / 2), "left": (w / 2) - (progress.width() / 2) });
+            progress.show();
+
+        }
+
+        function displayMaskFrame() {
+            var w = $(window).width();
+            var h = $(document).height();
+            var maskFrame = $("#dvmask");
+            maskFrame.css({ "z-index": 999998, "opacity": 0.7, "width": w, "height": h });
+            maskFrame.show();
+
+        }
+
+
+        //設定示警名稱下拉式選單是否出現-star
+        function setDisable() {
+            $("#h4ID").hide();
+            $("#pID").hide();
+            $("#h4ID2").hide();
+            $("#pID2").hide();
+        }
+
+        function setShow() {
+            $("#h4ID").show();
+            $("#pID").show();
+            $("#h4ID2").show();
+            $("#pID2").show();
+        }
+        //設定示警名稱下拉式選單是否出現-end
+
+        //依照使用者選擇示警類別來更新下拉式選單的內容
+        function setCategoryVal() {
+           var obj = {};
+            obj.LiveCategoryId = $("#dropType").val();
+            $("#hfdTblcapreciveInfoSuid").val($("#dropType").val());
+           $.ajax({
+                type: "GET",
+                url: "webService/ForMasterPage.ashx?LiveCategoryId="+obj.LiveCategoryId,           
+                async: false,                
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (SuccessJson) {                    
+                    $("#ddlCategory").html("");
+                    $.each(SuccessJson, function (index, obj) {
+                        let opt = document.createElement('option');
+                        opt.innerText = obj.Name+"("+obj.IssueName+")";
+                        opt.value = obj.AlertTypeId;
+                        $("#ddlCategory").append(opt);
+                    });
+                    BindEvents();
+                    saveddlCategoryVal();
+                 },
+                 error: function (xhr, ajaxOtions, thrownError) {
+                     $("body").append(xhr.status);
+                     $("body").append(xhr.responseText);
+
+                     alert(thrownError);
+                 },
+                 complete: function () {
+                    
+                 }
+             });
+        }
+
+
+        function saveddlCategoryVal() {
+            let selectVal = $("#ddlCategory").val();
+            $("#hfdAlertType").val(selectVal); 
+        }
+
+        function BindEvents() {
+            $("#ddlCategory").change(function () { saveddlCategoryVal();});
+        }
+
+        function setMailText(pageName) {
+            $("#setMailText").text(pageName+"意見回饋");
+        }
+    </script>
+
+
+
+    <script type="text/javascript"> 
+        $(document).ready(function () {
+
+            //文字大小切換	手機用		
+            wdth = $(window).width();
+            if (wdth < 760) {
+
+                $('.fontchange .fontTitle').click(function () {
+                    $('.fontchange ul').css({ 'display': 'block' });
+                    $('.fontchange .fontclose').css({ 'display': 'block' });
+                });
+                $('.fontchange .fontclose').click(function () {
+                    $('.fontchange ul').css({ 'display': 'none' });
+                    $('.fontchange .fontclose').css({ 'display': 'none' });
+                });
+
+            }
+
+            //文字大小切換	修正螢幕被拉時的bug			
+            $(window).resize(function () {
+                wdth = $(window).width();
+                if (wdth > 760) {
+
+                    $('.fontchange ul').css({ 'display': 'inline-block' });
+                    $('.fontchange .fontclose').css({ 'display': 'none' });
+
+                    $('.fontchange .fontTitle').click(function () {
+                        $('.fontchange ul').css({ 'display': 'inline-block' });
+                        $('.fontchange .fontclose').css({ 'display': 'none' });
+                    });
+
+                } else if (wdth < 759) {
+
+                    $('.fontchange ul').css({ 'display': 'none' });
+                    $('.fontchange .fontclose').css({ 'display': 'none' });
+
+                    $('.fontchange .fontTitle').click(function () {
+                        $('.fontchange ul').css({ 'display': 'block' });
+                        $('.fontchange .fontclose').css({ 'display': 'block' });
+                    });
+                    $('.fontchange .fontclose').click(function () {
+                        $('.fontchange ul').css({ 'display': 'none' });
+                        $('.fontchange .fontclose').css({ 'display': 'none' });
+                    });
+
+
+                }
+
+ 
+            });
+
+ 
+
+        });    
+</script>
+
+    
+
+    <!-- 卷軸樣式-->
+    <link rel="stylesheet" href="scripts/mCustomScrollbar/jquery.mCustomScrollbar.css">
+    <script src="scripts/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!--  Swiper  指滑動換頁 -->
+    <link rel="stylesheet" href="scripts/swiper-4.3.5/swiper.css">
+    <script src="scripts/swiper-4.3.5/swiper.min.js"></script>
+
+    <!--  主視覺滑動 -->
+    <link rel="stylesheet" href="scripts/bxslider/jquery.bxslider.css">
+    <script src="scripts/bxslider/jquery.bxslider.js"></script>
+
+    <!--  首頁style -->
+    <link rel="stylesheet" href="CSS/forindex.css">
+    <!--各類示警介紹Template -->
+    <script type="text/template" id="JsTemp_CapProfile">
+        <div name="alerts" class="alertbox" liveCategoryId="{{LiveCategoryID}}" ShowLatest="{{ShowLatest}}">
+            <h4>
+                <img src="../Images/calamityIcon150Black_{{AlertTypeID}}.png" alt="" />
+                {{AlertTypeName}} <small>資料提供: {{IssueName}}</small></h4>
+            <p>{{Introduction}}</p>
+            <a href="{{LinkMore}}" style="text-align:center" title="關於 {{AlertTypeName2}} 的更多資訊" tabindex="{{TabIndex}}">更多資訊</a>
+        </div>
+    </script>
+    <!--最新消息Template -->
+    <script type="text/template" id="JsTemp_News">
+        <tr>
+            <th>{{year}}{{date}}</th>
+            <td><a href="AnnouncementFactory.aspx?EditorContentPK={{EditorContentPK}}" tabindex="500" title="前往{{Subject}}" >{{Subject}}</td>
+        </tr>
+    </script>
+
+
+    <!--即時示警圖式 -->
+    <script type="text/template" id="JsTemp_AlertNow">
+
+        <li>
+            <a href="calamityAlertSearch_immediately.aspx?AlertTypeID={{@AlertTypeID}}" title="" tabindex="500">
+                <span class="imgArea">
+                    <img src="Images/calamityIcon150Black_{{@AlertType}}.png" alt="" class="mCS_img_loaded">
+                    <p>{{@AlertName}}</p>
+                </span>
+                <span class="txtArea">
+                    <span class="num">{{@Count}}</span>則
+                </span>
+            </a>
+        </li>
+    </script>
+
+        <!--各類示警介紹Template -->
+    <script type="text/template" id="JsTemp_LiveCatagory">
+            <a href="javascript:void(0)" name="LiveCagegoryGroup" categoryid="{{id}}"  class="indexTabs01" title="{{Name}}" tabindex="{{TabIndex}}">{{Name2}}</>
+    </script>
+
+    <script type="text/javascript"> 
+        //tab     
+
+        function TabClick() {
+            $('a[name="LiveCagegoryGroup"]').click(function () {
+                $('a[name="LiveCagegoryGroup"]').removeClass("selected");
+                $(this).addClass("selected");
+                $(this).fadeIn(300);
+            });
+        }
+    </script>
+    <script>
+        var gogoSlider;
+        var _IndexHome = {};
+        $(document).ready(function () {
+            //主視覺  
+
+            gogoSlider = $('.slider').bxSlider({
+                touchEnabled: false,  
+                auto: true,
+                pause: 5000,
+                autoHover: true,
+                autoControls: true, 
+                stopAutoOnClick: true, 
+                keyboardEnabled:true
+            }); 	  
+
+   
+             
+            $('.visionBox a').focus(function(){ 
+                gogoSlider.stopAuto();   
+            });
+            $('.visionBox a.numA').blur(function(){  
+                gogoSlider.reloadSlider();
+                gogoSlider.startAuto();	
+            });
+            $('#goC').focus(function(){ 
+                gogoSlider.reloadSlider();
+            });
+ 
+ 
+
+
+
+            //$('.slider').bxSlider({
+            //    touchEnabled: false,
+            //    auto:true
+            //});
+            $(".hidefirst").show();
+            // 取得IndexHome 必要物件
+            getIndexHome();
+            //設定事件開設的資料
+            setIframSrc();
+        });
+        //初始各類示警頁籤
+        var keymap = new Map();
+        function initialCapProfileTab() {
+            $('#CapProfileArea').not(':first').empty();
+            var tabindex = 1000;
+            $.each(_IndexHome._listCapProfileTab, function (i, item) {
+                //排除不重複組分類 
+                if ($('a[name="LiveCagegoryGroup"]').text().indexOf(item.Text) < 0) {
+                    //組各類示警介紹的分類
+                    var templateLiveCategory = $('#JsTemp_LiveCatagory').html();
+                    tabindex += 1000;
+                    keymap.set(item.Text, tabindex);
+                    templateLiveCategory = templateLiveCategory.replace("{{id}}", item.Value)
+                        .replace("{{Name}}", item.Text)
+                        .replace("{{Name2}}", item.Text)
+                        .replace("{{TabIndex}}", tabindex);
+
+                    $('#LiveCategoryArea').html($('#LiveCategoryArea').html() + "<li>" + templateLiveCategory + "</li>");
+                    $(".indexPaneOverflowArea").append("<div id='Div_CapProfile" + tabindex + "' style='text-align:left;'></div>");
+                }
+            });
+        }
+        //初始各類示警介紹
+        function initialCapProfile() {
+            //保留"最近上架示警"分類
+            //$('#CapProfileArea').not(':first').empty();
+            //var tabindex = 1000;
+            //var keymap = new Map();
+            $.each(_IndexHome._listCapProfile, function (i, item) {
+                
+                ////排除不重複組分類 
+                //if ($('a[name="LiveCagegoryGroup"]').text().indexOf(item.CategoryName) < 0) {
+                //    //組各類示警介紹的分類
+                //    var templateLiveCategory = $('#JsTemp_LiveCatagory').html();
+                //    tabindex += 1000;
+                //    keymap.set(item.CategoryName, tabindex);
+                //    templateLiveCategory = templateLiveCategory.replace("{{id}}", item.LiveCategoryID)
+                //                                                .replace("{{Name}}", item.CategoryName)
+                //                                                .replace("{{Name2}}", item.CategoryName)
+                //                                                .replace("{{TabIndex}}", tabindex);
+                    
+                //    $('#LiveCategoryArea').html($('#LiveCategoryArea').html() +  "<li>" + templateLiveCategory + "</li>");
+                //    $(".indexPaneOverflowArea").append("<div id='Div_CapProfile"+tabindex+"' style='text-align:left;'></div>");
+                //}
+
+                //組各類示警介紹的明細
+                var templateCapProfile = $('#JsTemp_CapProfile').html();
+                templateCapProfile = templateCapProfile.replace("{{AlertTypeID}}", item.Code)
+                                                       .replace("{{AlertTypeName}}", item.AlertTypeName)
+                                                       .replace("{{AlertTypeName2}}", item.AlertTypeName)
+                                                       .replace("{{Introduction}}", item.Introduction)
+                                                       .replace("{{IssueName}}", item.IssueName)
+                                                       .replace("{{LiveCategoryID}}", item.LiveCategoryID)
+                                                       .replace("{{ShowLatest}}", item.Flag)
+                                                       .replace("{{LinkMore}}", '/platformInfo.aspx?SelectedCap=' + item.AlertTypeID)
+                                                       .replace("{{TabIndex}}", keymap.get(item.CategoryName) + (i+1));
+
+                $('#Div_CapProfile' + keymap.get(item.CategoryName)).append(templateCapProfile);
+                if (item.Flag == "ShowLatest") {
+                    var templateCapProfile1000 = $('#JsTemp_CapProfile').html();
+                    templateCapProfile1000 = templateCapProfile1000.replace("{{AlertTypeID}}", item.Code)
+                                                           .replace("{{AlertTypeName}}", item.AlertTypeName)
+                                                           .replace("{{AlertTypeName2}}", item.AlertTypeName)
+                                                           .replace("{{Introduction}}", item.Introduction)
+                                                           .replace("{{IssueName}}", item.IssueName)
+                                                           .replace("{{LiveCategoryID}}", item.LiveCategoryID)
+                                                           .replace("{{ShowLatest}}", item.Flag)
+                                                           .replace("{{LinkMore}}", '/platformInfo.aspx?SelectedCap=' + item.AlertTypeID)
+                                                           .replace("{{TabIndex}}", 1000 + (i+1));
+
+                    $('#Div_CapProfile1000').append(templateCapProfile1000);
+                }
+            });
+
+            //綁定各類示警Click event
+            bindLiveCagegory();
+
+            //預設點選最新上架示警
+            $('a[name="LiveCagegoryGroup"]:first').click();
+
+
+            //綁定tab
+            TabClick();
+        };
+
+        //綁定各類示警Click event
+        function bindLiveCagegory() {
+            $('a[name="LiveCagegoryGroup"]').click(function () {
+                $('a[name="LiveCagegoryGroup"]').removeClass("selected");
+                $(this).addClass("selected");
+                $(this).fadeIn(300);
+
+                var tabindex = $(this).attr("tabindex");
+
+                //內容區塊先全隱藏
+                for (var i = 1000; i < 10000; i = i + 1000) {
+                    $("#Div_CapProfile" + i).hide();
+                }
+                $("#Div_CapProfile" + tabindex).show();
+                //var selectedCategoryid = $(this).attr('categoryid');
+                ////篩選最新上架示警
+                //if ($(this).attr('livecategoryid') === 'latest') {
+                //    $('div[name="alerts"]').each(function (index, value) {
+                //        if ($(this).attr('showlatest') === 'ShowLatest') {
+                //            $(this).show();
+                //        } else {
+                //            $(this).hide();
+                //        }
+
+                //    })
+                //} else {
+                //    $('div[name="alerts"]').each(function (index, value) {
+                //        if ($(this).attr('livecategoryid') === selectedCategoryid) {
+                //            $(this).show();
+                //        } else {
+                //            $(this).hide();
+                //        }
+                //    })
+                //}
+
+                //重新依照示警數量決定是否出現橫向卷軸
+                $(".indexPaneOverflowArea").mCustomScrollbar("destroy");
+                $(".indexPaneOverflowArea").mCustomScrollbar({
+                    axis: "x",
+                    theme: "dark-thin",
+                    autoExpandScrollbar: true,
+                    advanced: { autoExpandHorizontalScroll: true }
+                });
+            })
+        }
+
+        function FilterNews() {
+            //卷軸
+            //$(".newsoverview").mCustomScrollbar({
+            //        theme: "dark-thin",
+            //        autoExpandScrollbar: true,
+            //        advanced: { autoExpandHorizontalScroll: true }
+            //});
+
+            if (typeof (_IndexHome._listAnnouncement) != "undefined" && _IndexHome._listAnnouncement.length > 0) {
+                filterObj = _IndexHome._listAnnouncement;
+                if (filterObj.length > 0) {
+                    $.each(filterObj, function (index, obj) {
+                        if (index < 5) { 
+                            var template = $("#JsTemp_News").html();
+                            $("#table_News").append(template.replace(/{{date}}/g, obj.date.substr(0,2) + "-" + obj.date.substr(2,2))
+                                .replace(/{{Subject}}/g, obj.Subject)
+                                .replace(/{{EditorContentPK}}/g, obj.EditorContentPK)
+                                .replace(/{{year}}/g, obj.year+ "-")
+                                );
+                        }
+                    });
+                }
+            }
+        }
+
+        function FilterAlertNow() {
+            //卷軸
+            $("ul.alertnowBox").mCustomScrollbar({
+                    theme: "dark-thin",
+                    autoExpandScrollbar: true,
+                    advanced: { autoExpandHorizontalScroll: true }
+            });
+
+            if (_IndexHome._listCapImmediateImgCount !== null && _IndexHome._listCapImmediateImgCount.length > 0) {
+                filterObj = _IndexHome._listCapImmediateImgCount;
+                if (filterObj.length > 0) {
+
+                    $(".alertnowBox").html("")
+                    $.each(filterObj, function (index, obj) {
+                        if (obj.Name == "ncdrSystemTest" || obj.Name == "1044") {
+                            //排除測試的
+                        } else {
+                            var template = $("#JsTemp_AlertNow").html();
+                            $(".alertnowBox").append(template.replace(/{{@AlertType}}/g, obj.Code)
+                                .replace(/{{@AlertName}}/g, obj.Name)
+                                .replace(/{{@Count}}/g, obj.Total)
+                                .replace(/{{@AlertTypeID}}/g, obj.Id)
+                            );
+                            $('.alertnowBox a:first').focus(function(){ 
+                                gogoSlider.stopAuto();  
+                                gogoSlider.goToSlide(0); 
+                            });	
+                            $('.alertnowBox a:last').blur(function(){  
+                                gogoSlider.reloadSlider();
+                                gogoSlider.goToSlide(1); ;	
+                            });
+                        }
+                    });
+                }
+            } else {
+                //沒有示警時出現這個
+                $(".todayIsGoodDay").show();
+                $(".alertnowBox").hide();
+            }    
+        }
+
+            //ajax範例
+        function Test() {
+            var obj = {};
+            obj.SUID = "BBBBB";
+            $.ajax({
+                type: "POST",
+                url: "indexHome.aspx/Test",
+                dataType: "json",
+                async: true,
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                success: function (SuccessJson) {
+                    alert(SuccessJson.d);
+                },
+                error: function (xhr, ajaxOtions, thrownError) {
+                    $("body").append(xhr.status);
+                    $("body").append(xhr.responseText);
+
+                    alert(thrownError);
+                },
+                complete: function () {
+
+                }
+            });
+        }
+
+        function getIndexHome() {
+            $.ajax({
+                type: "POST",
+                url: "indexHome.aspx/GetIndexHome",
+                dataType: "json",
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (SuccessJson) {
+                    _IndexHome = SuccessJson.d;
+                },
+                error: function (xhr, ajaxOtions, thrownError) {
+                    $("body").append(xhr.status);
+                    $("body").append(xhr.responseText);
+
+                    alert(thrownError);
+                },
+                complete: function () {
+                    //初始各類示警頁籤
+                    initialCapProfileTab();
+
+                    //初始各類示警介紹
+                    initialCapProfile();
+
+                    // 最新消息
+                    FilterNews();
+
+                    //即時示警
+                    FilterAlertNow();
+                }
+            });
+        }
+
+        function openAlert(url) {//示警開設點擊的彈跳視窗
+                $.fancybox.open({ href: url, type: 'iframe' }, { maxWidth: 800, width: '90%' });
+            }
+
+        function setIframSrc() {//設定示警開設url以及標題
+            if (document.getElementById('iframe_City') != undefined) {
+                document.getElementById('iframe_City').src = "iframe_indexEventCity.aspx?EventStartTime=" + $("#hfdStarTime").val();
+            }
+            if (document.getElementById('iframe_Event') != undefined) {
+                document.getElementById('iframe_Event').src = "iframe_indexEvent.aspx?EventStartTime=" + $("#hfdStarTime").val() + "&EventName=" + $("#hfdEventName").val();
+            }
+            $("#titleCity").text($("#hfdEventName").val() + " 來襲!!");
+            $("#titleEvent").text($("#hfdEventName").val() + " 來襲!!");
+        }
+
+
+    </script>
+
+
+       <NOSCRIPT>
+   『您的瀏覽器不支援JavaScript功能，若網頁功能無法正常使用時，請開啟瀏覽器JavaScript狀態』
+   </NOSCRIPT>
+
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <form method="post" action="./" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="O4xw47pc9e/JpRMy0aWP3u3QkIydEUH+EewNOI7OrxnWo9xDuxLEOIsAWFlglQWVyh+Ifzhj8+I7c1uNj6b3H0CS4Jui6bS9YTgZukG0Gm5p63ggTm7RDMfKTZEKHhWZxIbyzFr6zLj3TNgdesPRyiiovgVT+3pjXAQTe7lXAqK/hjHt2O/ZhEITaVthy+MP4qTPdUcPH6nWL7D7XJ0EKS+Odmt1qeExy85Mj4PVkdMOXqtsELD2p1FB4dNDQBkB4Cc8isTPhnlkyO3gVUyWM4cp2ceTat40sFJSmrsOxJsa6hQ8S99bHw6f/P/Tk8IE+BW0ZU0uZapTFjqPxir/A7fGsiCGNTtZCPR9g2u30AiWsrlMydZV9Df5XIPy9FPwRCb86dcag0c2ywVBPnZb+PoC90gmqizoxZ4OVYL0DtkiId5A5AugU5qTgrYOCPayIofNlk8FO8go6fKz58XbNZj/aFZA1Zvej2bi7Oigy+dfLM3HFKBoIiZCSyXNBvWAlVFw5QO7OG8bGU5HoZtZIOONxfLsGREA17NHFZALLGDGpBXt0pfKsmff29rFNeVryHpocGKJuNYT5Mm+RmaDTGrimX1hm+QVdDkdHUXhOvstu2yf/c0lZ1eqZfAp8Kzy" />
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="324E5887" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="YqNDPTKt2qfX6lbkBIHwn5XWINVBildM/Fl7xCZJfk9Gv7QEeAVEhVolvNG69AUt3wX1QbmQAMtE1641fuTxls54xG37stBYFHn3XC/dI0w+sRjwQmPBNZF+S+4qgA7sN3jubzdUQwk0OgLlGQeDKbbJAWt7ADGSGGa5BkffWv7OwjKbzxhEPaXSiteOrOkim0RCb6lr1rPSIxHdASu9n7ZWa+MZIqHYaYPRpTUG0gng5dUtdOx3Q10/2Y2N2xxqhIbjZgjeVxzo19xpjX5x4KFa5s08reds5sDEZrWQpomtWKz7kiul3msMKUYrAz8/k3he+OfQHjdfPBGk40uKQSs8BiwecQAT3m77XppiXVgrbnhRrsEWZYsgntsgjXVirlwPHTnFUlPh0ZUI4ls1nrWFhkKk+qvNHeykxRsMWBrt2Pz4p4to1PV09VaXwS11tOdKryHVt40ERldGOZOHf+JFFBSWbBirFqVJ7LlZ5JG9DjiXBbC8N7gr97CB1gfW" />
+</div>
+        
+        <input type="hidden" name="ctl00$PageMangerType" id="PageMangerType" value="1" />
+ 
+        <div style="position: absolute; top: -220px;">
+            <img id="imgevent" itemprop="image" alt="imgevent" />
+            <p id="pdes" itemprop="description">
+            </p>
+        </div>
+
+        
+
+        <div class="header">
+              <a href="#goC" id="gotocenter" title="跳到主要內容區塊" tabindex="1" class="sr-only sr-only-focusable">跳到主要內容區塊</a>
+            <a  id="goU" href="#goU" title="上方選單區" class="accesskeyStyleTop" accesskey="U" tabindex="2">:::</a>
+
+            <h1>
+            <a href="indexHome.aspx" class="titleLogo" title="" tabindex="3">
+                <img src="../Images/headTitle.png" alt="民生示警資訊介接應用平台"> </a>
+              </h1>
+            <a class="phone_menu">
+                <i class="fa fa-bars" ></i>
+            </a>
+
+
+ <div class="menuArea">
+<div class="topArea" > 
+      <div class="fontchange ">
+<NOSCRIPT>本Script功能提供瀏覽字級大小的變更，若您的瀏覽器不支援此項功能，IE6請利用鍵盤按住Alt鍵 + V → X → (G)最大(L)較大(M)中(S)較小(A)小，來選擇適合您的文字大小，而IE7或Firefox瀏覽器則可利用鍵盤Ctrl + (+)放大(-)縮小來改變字型大小。</NOSCRIPT>
+  
+   <a href="javascript:void(0)" class="fontTitle" title=" ">字級</a><span class="fontclose">X</span>
+  <ul>
+  <li><a href="javascript:void(0)" class="txtchange txtchange_S" title=" " tabindex="4">小</a></li>
+  <li><a href="javascript:void(0)" class="txtchange txtchange_M sel" title="" tabindex="5">中</a></li>
+  <li><a href="javascript:void(0)" class="txtchange txtchange_L" title="" tabindex="6">大</a></li>
+   </ul> 
+   <a href="sitemap2019.aspx" class="btn_sitemap mobile_hide" tabindex="7"   title="" >網站導覽</a>
+  </div>
+   
+
+     <a href="onlineServict.aspx"  class="serviceononlineBox" title="" tabindex="8"  ><i class="fa fa-volume-control-phone"></i><span>線上客服</span></a>   
+	<a href="#" data-toggle="modal" data-target="#messageBox" class="messageBox" title="" tabindex="9"><i class="fa fa-envelope"></i> <span>意見信箱</span></a>
+	<!--<a href="MemberCalendar.aspx" class="calendarBox"><i class="fa fa-calendar" ></i> <span>訂閱示警行事曆</span></a>-->
+    
+</div><!--END topArea-->
+
+
+            <div class="CAP_memuBar">
+                <a class="phone_menu_close" tabindex="50"><i class="fa fa-times" aria-hidden="true"></i></a>
+                <ul>
+                    <a id="goM" href="#goM" title="主要選單區" class="accesskeyStyle" accesskey="M" tabindex="50">:::</a>
+                    <li>
+                        <a href="#" class="CAP_menu_title" title="" tabindex="50"><i class="fa fa-search" aria-hidden="true"></i>查詢示警</a>
+                        <div class="CAP_menu_sub">
+                            <a href="calamityAlertSearch_immediately.aspx" title="" tabindex="50">即時示警查詢</a>
+                            <a href="calamityAlertSearch_history.aspx" title="" tabindex="50">歷史示警查詢</a>
+                            <a href="platformInfo.aspx?SelectedCap=5" title="" tabindex="50">示警簡介</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"  class="CAP_menu_title" title="" tabindex="50"><i class="fa fa-cloud-download" aria-hidden="true"></i>資料下載  </a>
+                        <div class="CAP_menu_sub">
+                            <a href="RSS.aspx" tabindex="50">示警介接</a>
+                            <a href="applywarndata_step01.aspx" tabindex="50">資料推送</a>
+                            <a href="assistData.aspx" tabindex="50">輔助資料</a>
+                          
+                            <a href="AlertdataDownload.aspx" title="" tabindex="50">CAP下載</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="CAP_menu_title" title="" tabindex="50"><i class="fa fa-cogs" aria-hidden="true"></i>開發專區  </a>
+                        <div class="CAP_menu_sub">
+                            <a href="CAPfiledownload.aspx" title="" tabindex="50">CAP相關文件</a>
+                            <a href="CAP_develope.aspx" title="" tabindex="50">CAP軟體工具箱</a>
+                            <a href="alertMessageAPI.aspx" title="" tabindex="50">示警查詢API</a>
+                            <!--<a href="iconDownload.aspx" title="">示警圖示</a>-->
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"  class="CAP_menu_title" title="" tabindex="50"><i class="fa fa-cubes" aria-hidden="true"></i>示警應用</a>
+                        <div class="CAP_menu_sub">
+                            <a href="alertWebElement2.aspx" title="" tabindex="50">示警元件</a>
+                            <a href="dataProvide.aspx"  title="" tabindex="50">示警資料提供</a> 
+                            
+                            
+                            
+                            
+                              
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="CAP_menu_title" title="" tabindex="50"><i class="fa fa-window-maximize" aria-hidden="true"></i>認識平台 </a>
+                        <div class="CAP_menu_sub"> 
+                            <a href="history.aspx" title="" tabindex="50">重要事蹟</a>
+                            <a href="usestandard.aspx"  title="" tabindex="50">使用規範</a>
+                            <a href="Document/民生示警公開資料平台.pdf" title="平台簡介.pdf" tabindex="50">平台簡介</a>
+                            <a href="Document/民生示警公開資料平台操作手冊.pdf" title="操作手冊.pdf" tabindex="50">操作手冊</a>
+                            <a href="FAQ.aspx" title="" tabindex="50">常見問題</a>
+                            <!--以下NEW -->
+                            
+                           
+                            
+                            
+                           
+                           
+                        </div>
+                    </li>
+                   
+                     
+                    <li>
+                        <a href="#" id="MemberArea" class="CAP_menu_title" tabindex="50"><i class="fa fa-user-o" aria-hidden="true"></i>會員專區 </a>
+                        <div class="CAP_menu_sub memArea">
+                            <a href="memberSignIn.aspx" id="signIn" tabindex="50">登入</a>
+                            <a href="memberRegister.aspx" id="register" tabindex="50">註冊</a>
+                            
+                            
+                           
+                            
+                            <!---->
+                            
+                            
+                        </div>
+                    </li>
+                   
+                </ul>
+                
+            </div>
+            <!-- end .memuBar -->
+
+
+        </div><!--END menuArea-->
+        </div> <!-- end .header -->
+        <div class="CAP_body ">
+              
+            
+            
+        </div>
+        <!-- end .CAP_body-->
+        
+    <input type="hidden" name="ctl00$ContentPlaceHolder2$hfdStarTime" id="hfdStarTime" value="2015/10/01" />
+    <input type="hidden" name="ctl00$ContentPlaceHolder2$hfdEndTime" id="hfdEndTime" value="2018/10/24" />
+    <input type="hidden" name="ctl00$ContentPlaceHolder2$hfdEventName" id="hfdEventName" value="尼伯特颱風" />
+    <div class="bannerBox">
+        <ul class="slider">
+            
+                <li>
+                    <div class="index_alertArea_clound"></div>  	 
+                    <div class="index_alertArea"> 
+                        <div class="boxarea">
+                            <h2 >目前示警</h2>
+
+                            
+                            <div class="todayIsGoodDay" style="display:none">
+                                      <span>目前無災害示警</span> 
+                            </div><!-- END .todayIsGoodDay -->
+                              
+   
+                                     
+
+                            <ul class="alertnowBox">	
+                            </ul>
+                        </div>
+                    </div><!-- END .index_alertArea -->
+                </li>
+            
+
+            
+            <li>
+                <div id="vision01Area" style="display:none" class="hidefirst">
+                    <div class="visionBox">
+                        <span class="item01">
+                            <a href="Win_movie.aspx" class="movieshow fancyiframePageMovie" title="在新視窗打開鏈結"><span>災害示警影片介紹</span></a>
+                        </span>
+                        <span class="item01_shadow"></span>
+                        <span class="item03"></span>
+                        <span class="item02"></span>
+                        <span class="item04">目前本站所供應的資訊
+                            <br>共有<span class="num"><span id="ContentPlaceHolder2_lblCntUnit">38</span></span>個機關單位提供
+                            <br>發布共<a href="/RSS.aspx" title="" class="numA"><span class="num"><span id="ContentPlaceHolder2_lblCntCapReciveInfo">58</span></span></a>項即時資訊</span>
+                    </div>
+                    <div class="mobileIMG760">
+                        <a href="Win_movie.aspx" class="fancyiframePage " title="在新視窗打開鏈結">
+                            <img src="Images/index_vision01_mobile760.png" alt="災害示警影片介紹"></a>
+                    </div>
+                    <div class="mobileIMG400">
+                        <a href="Win_movie.aspx" class="fancyiframePage " title="在新視窗打開鏈結">
+                            <img src="Images/index_vision01_mobile400.png" alt="災害示警影片介紹"></a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div id="vision03Area" style="display:none" class="hidefirst">
+                    <div class="visionBox">
+                        <div class="item01"></div>
+                        <div class="item02"></div>
+                        <div class="item03"></div>
+                        <div class="item04"></div>
+                    </div>
+                    <div class="mobileIMG760">
+                        <img src="Images/index_vision03Area_mobile760.png" alt="訂閱方式介紹">
+                    </div>
+                    <div class="mobileIMG400">
+                        <img src="Images/index_vision03Area_mobile400.png" alt="訂閱方式介紹">
+                    </div>
+                </div>
+            </li>
+
+
+        </ul>
+    </div>
+    <!-- END bannerBox-->
+
+
+
+    <!-- 上方banner script -->
+
+    <div class="index_newsArea">
+         <a id="goC" href="#goC" title="主要內容區" class="accesskeyStyleCon" accesskey="C" >:::</a> 
+
+        <h2>最新消息</h2>
+        
+            <table id="table_News" style="height:345px;">
+
+            </table>
+         
+        <a href="morenews.aspx" class="btn_link" title="">更多消息...</a>
+
+    </div>
+    <!-- END .index_newsArea -->
+
+    <div class="index_aboutArea">
+        <h2>認識民生示警平台</h2>
+        <div class="linkbox">
+            <a href="history.aspx" class="link01" title="">
+                <img src="../Images/index_about_icon01.png" alt="" >重要事蹟</a>
+            <a href="platformInfo.aspx?SelectedCap=5" class="link02" title="">
+                <img src="../Images/index_about_icon02.png" alt="" >示警簡介</a>
+            <a href="assistData.aspx" class="link03" title="">
+                <img src="../Images/index_about_icon03.png" alt="" >輔助資料</a>
+            <a href="CAPfiledownload.aspx" class="link04" title="">
+                <img src="../Images/index_about_icon04.png" alt="" >示警相關<br>
+                文件下載</a>
+        </div>
+    </div>
+    <!-- END .index_aboutArea -->
+
+
+
+
+    <div class="index_alertinfoArea">
+        <h2>各類示警介紹</h2>
+
+        <ul id="LiveCategoryArea" class="indexTabs">
+          <li><a href="javascript:void(0)" name="LiveCagegoryGroup" LiveCategoryId="latest" class="indexTabs05 selected" title="最近上架示警" tabindex="1000">最近上架示警</a></li>         
+        </ul>
+
+        <div class="indexPane indexPane05" style="display: block;">
+            <div class="indexPaneOverflowArea">
+                <div id="Div_CapProfile1000" style="text-align:left;"></div>
+            </div>
+
+
+        </div>
+        <!-- END .tabs_pane -->
+    </div>
+    <!-- END .index_alertinfoArea -->
+
+    <!-- 各類示警介紹 script -->
+    <script>
+        (function ($) {
+            $(window).on("load", function () {
+
+                //橫向卷軸
+                $(".indexPaneOverflowArea").mCustomScrollbar({
+                    axis: "x",
+                    theme: "dark-thin",
+                    autoExpandScrollbar: true,
+                    advanced: { autoExpandHorizontalScroll: true }
+                });
+
+
+            });
+        })(jQuery);
+
+
+    </script>
+
+
+   
+
+   
+
+     
+
+    <div class="indexBottom"><!--  style="height:500px" -->
+        <div class="boxarea">
+            <!--
+             <div class="index_calendar">    
+                
+                 <iframe title="示警行事曆服務" src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=9i06bhmultv3ram6rtg606ui70%40group.calendar.google.com&amp;color=%23711616&amp;src=c1dnu7jasro6legr4p50kh7nro%40group.calendar.google.com&amp;color=%23875509&amp;src=mm1fnm5eshfeqpcbarntgv8bp8%40group.calendar.google.com&amp;color=%235F6B02&amp;src=56kj8ar75080pmecija4d84g34%40group.calendar.google.com&amp;color=%23865A5A&amp;src=9i06bhmultv3ram6rtg606ui70%40group.calendar.google.com&amp;color=%23711616&amp;src=4kmh6dvqbng7jln7b2qqu0t34k%40group.calendar.google.com&amp;color=%23875509&amp;src=6o99v0pfdvq1uev1g2st2i1gtc%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=Asia%2FTaipei" style="border-width:0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+                 
+             </div>
+            -->
+             <div class="index_QAArea"><!--  style="line-height: 450px;" -->
+                <a href="FAQ.aspx" style="display: inline-block;" title="" tabindex="5000">
+                    <img src="Images/index_QAtitle.png" alt="QA圖示"  style="vertical-align:middle;">
+                </a>
+             </div>
+            <style>
+                .index_QABlock{
+                    float: right; width: 70%;padding: 0 0 0 10px;
+                }
+                @media only screen and (max-width:768px) {
+                    .index_QABlock{
+                        float: right; width: 100%;padding: 0 0 0 0px;
+                    }
+                }
+            </style>
+            <div class="index_QABlock">
+	<a class="QAList_Q" href="FAQ.aspx#q1" title="" tabindex="5000">
+        <label><i class="fa fa-question" aria-hidden="true"></i></label> 一、	平台目前有哪些示警資料類型？
+    </a>
+    <a class="QAList_Q" href="FAQ.aspx#q2" title="" tabindex="5000">
+        <label><i class="fa fa-question" aria-hidden="true"></i></label> 二、	我要如何取得或應用平台上的示警訊息？
+    </a>
+    <a class="QAList_Q" href="FAQ.aspx#q3" title="" tabindex="5000">
+        <label><i class="fa fa-question" aria-hidden="true"></i></label> 三、	我們單位想介接「示警元件」，但網頁上會先顯示亂碼，該怎麼排除？
+    </a>
+    <a class="QAList_Q" href="FAQ.aspx#q4" title="" tabindex="5000">
+        <label><i class="fa fa-question" aria-hidden="true"></i></label> 四、	我使用「資料推送-HTTPS推送」功能遇到困難，該怎麼排除？
+    </a>
+    <a class="QAList_Q" href="FAQ.aspx#q5" title="" tabindex="5000">
+        <label><i class="fa fa-question" aria-hidden="true"></i></label> 五、	我有示警訊息想要提供到平台，請問要如何進行？
+    </a>
+</div>
+<style type="text/css">
+	a.QAList_Q{margin-bottom: 10px; margin-top: 1px; color: #761b06;display:block;}
+
+</style>
+            <!-- END .index_QAArea -->
+               <br class="clearfloat">
+        </div>
+    </div>
+    <br class="clearfloat">
+
+        <div class="footer ">
+            <div class="footer_pixel">
+                <div class="footercon">
+                   
+                    <div class="footer_memuBar">
+                           <a id="goT"  href="#goT" title="下方導覽區" class="accesskeyStyle" accesskey="T" tabindex="50000">:::</a> 
+                        <ul> 
+                            <li>
+                                <h3>查詢示警</h3>
+                                <ul class="menu_sub">
+                                    <li><a href="calamityAlertSearch_immediately.aspx" title="" tabindex="50000">》即時示警查詢</a>  </li>
+                                    <li><a href="calamityAlertSearch_history.aspx" title=""  tabindex="50000">》歷史示警查詢</a>   </li>
+                                    <li><a href="platformInfo.aspx?SelectedCap=5" title=""  tabindex="50000">》示警簡介</a> </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <h3>資料下載  </h3>
+                                <ul class="menu_sub">
+                                    <li><a href="RSS.aspx" title="" tabindex="50000">》示警介接</a>  </li>
+                                    <li><a href="applywarndata_step01.aspx" title="" tabindex="50000">》資料推送</a>  </li>
+                                    <li><a href="assistData.aspx" title="" tabindex="50000">》輔助資料</a>   </li>
+                                     
+                                    <li><a href="AlertdataDownload.aspx" title="" tabindex="50000">》CAP下載</a>  </li>
+                                </ul>  
+                       
+                            </li>
+                            <li>
+                                <h3>開發專區  </h3>
+                                <ul class="menu_sub">
+                                    <li><a href="CAPfiledownload.aspx" title="" tabindex="50000">》CAP相關文件</a>  </li> 
+                                    <li><a href="CAP_develope.aspx"  title="" tabindex="50000">》CAP軟體工具箱</a>  </li>
+                                    <li><a href="alertMessageAPI.aspx" title="" tabindex="50000">》示警查詢API</a> </li>
+                                    <!--<li><a href="iconDownload.aspx" title="">》示警圖示</a> </li>-->
+                               </ul>
+                            </li>
+                            <li>
+                                <h3>示警應用  </h3>
+                                <ul class="menu_sub">
+                                    <li><a href="alertWebElement2.aspx" title=""  tabindex="50000">》示警元件</a>  </li>
+                                    <li><a href="dataProvide.aspx"  title=""  tabindex="50000">》示警資料提供</a> </li>
+                                    
+                                    
+                                    
+                                     
+                               </ul>
+                            </li>
+                            <li>
+                                <h3>認識平台 </h3>
+                                <ul class="menu_sub">
+                                    
+                                    <li><a href="history.aspx" title="" tabindex="50000">》重要事蹟</a> </li>
+                                    <li ><a href="usestandard.aspx"  title=""  tabindex="50000">》使用規範</a>  </li>
+                                    <li><a href="Document/民生示警公開資料平台.pdf" title="平台簡介.pdf" tabindex="50000">》平台簡介</a>  </li>
+                                    <li><a href="Document/民生示警公開資料平台操作手冊.pdf" title="操作手冊.pdf" tabindex="50000">》操作手冊</a>  </li>
+                                    <li><a href="FAQ.aspx" title="" tabindex="50000">》常見問題</a> </li>
+                                   
+                                   
+                                    
+                                   
+                                    
+                                </ul>
+
+                            </li>
+                           
+                            <li>
+                                <h3>會員專區  </h3>
+                                <ul class="menu_sub">
+                                    <li><a href="MemberArea.aspx" title="" tabindex="50000">》會員基本資料管理</a>  </li>
+                                    <li><a href="CapApplyLog.aspx" title="" tabindex="50000">》資料推送管理</a>  </li>
+                                    <li><a href="dataSupplyMG.aspx" title="" style="display:none" tabindex="50000">》資料提供管理</a> </li>
+                                    <!--<li><a href="MemberCalendar.aspx">》訂閱示警行事曆</a> </li>-->
+                                </ul>
+                                
+                            </li>
+
+                            <li>
+                                <h3><a href="javascript:void(0)" data-toggle="modal" data-target="#messageBox"  title="" tabindex="50000">意見信箱  </a></h3>
+                                 <h3><a href="onlineServict.aspx"  title="" tabindex="50000">線上客服  </a></h3>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end .memuBar -->
+                    <div class="foot_copyright">
+                         <div class="mailArea "> 
+        
+          <span class="mobile_hide">線上客服：</span>
+                             
+   
+            <a href="onlineServict.aspx"  class="main_btn bg_Skype"  title="" tabindex="50000"> <i class="fa fa-skype" ></i> Skype</a>     
+             <a href="onlineServict.aspx"  class="main_btn bg_Line"  title="" tabindex="50000"><img src="../Images/icon_line2.png" alt="線上客服Line" style="height: 20px;"> Line</a>  
+
+          <a href="https://goo.gl/forms/svNL2QtzBAQz0hDB2" target="_blank" class="main_btn bg_green"  title="另開視窗，連結到問券填寫頁面" tabindex="50000"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 填寫問卷</a>
+           <a  href="javascript:void(0)" data-toggle="modal" data-target="#messageBox" class="main_btn bg_blue"  title="" style="color:#000;" tabindex="50000">
+           <i class="fa fa-envelope" aria-hidden="true"></i>
+			   意見信箱</a>
+    	
+    </div>
+                        <a href="https://www.ncdr.nat.gov.tw/" target="_blank" class="footer_logo"  title="另開新視窗，連結到國家災害防救科技中心" tabindex="50000">
+                            <img src="Images/NCDRLOGO.png" alt="NCDR LOGO"></a>
+                        <ul>
+                            <li>民生示警公開資料平台 &copy; 國家災害防救科技中心 版權所有　　</li>
+                            <li>23143 新北市新店區北新路三段200號9樓</li>
+                            <li>9F., No.200, Sec. 3, Beisin Rd., Xindian District, New Taipei City 23143, Taiwan (R.O.C.)</li>
+                            <li>Email：<a href="mailto:alert@ncdr.nat.gov.tw" title="" tabindex="50000">alert@ncdr.nat.gov.tw</a></li>
+                            <li class="count">瀏覽人數：4,947,220</li>
+                            <li ><a href="https://accessibility.ncc.gov.tw/Applications/Detail?category=20190723140600" target="_blank" title="另開新視窗，連結到無障礙網路空間服務網"  tabindex="50000"><img src="Images/AA.jpg" alt="通過AA檢測等級無障礙網頁檢測"  style="height: 50px;"></a></li> 
+                     
+                            </ul>
+                    </div>
+
+                     <a href="javascript:void(0)" id="goTop" title="goTop回到最上端"  tabindex="60000"><i class="fa fa-angle-double-up"></i></a>
+
+                </div>
+                <!-- end .footercon -->
+            </div>
+            <!-- end .footer_pixel -->
+        </div>
+        <!-- end .footer -->
+
+
+
+
+
+  <!-- 意見信箱 modal -->
+ <input type="hidden" name="ctl00$hfdType" id="hfdType" value="1" />
+ <input type="hidden" name="ctl00$hfdTblcapreciveInfoSuid" id="hfdTblcapreciveInfoSuid" />
+ <input type="hidden" name="ctl00$hfdAlertType" id="hfdAlertType" />
+<div class="modal fade" id="messageBox" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">意見信箱</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+		  
+	  
+ <h3 id="setMailText">意見回饋</h3>
+ 
+  <div class="message">
+	  <h4>	
+       <label for="tbxName">姓名：</label></h4>
+	  <p><input name="ctl00$tbxName" type="text" maxlength="15" id="tbxName" /></p>
+   
+  	<h4>  <label for="tbxMail">電子郵件：</label></h4>
+  	<p>
+          <input name="ctl00$tbxMail" type="text" maxlength="50" id="tbxMail" />
+  	</p>
+ 
+  	<h4> <label for="radioType"> 問題類型：</label></h4>
+  	
+       <table id="radioType">
+	<tr>
+		<td><input id="radioType_0" type="radio" name="ctl00$radioType" value="1" checked="checked" /><label for="radioType_0">系統使用問題</label></td>
+	</tr>
+</table>   
+
+    <p></p>
+
+    <h4 id="h4ID2">示警類別：</h4>
+  	<p id="pID2">
+       <select name="ctl00$dropType" id="dropType">
+	<option value="">請選擇</option>
+	<option value="5ECC219B-4880-404D-8DE8-534C14AE11D2">中央部會</option>
+	<option value="72C98366-CCB2-4DC7-8570-349F0F3A8A2D">企業學研</option>
+	<option value="7CC91687-40BA-44ED-8F2B-15A4C0CFA076">事業單位</option>
+	<option value="EB6F9477-22DA-4F6A-9A49-72F197944861">地方政府</option>
+
+</select>
+        
+  	</p>
+
+  	<h4 id="h4ID">示警名稱：</h4>
+  	<p id="pID">
+       <select id="ddlCategory"></select>
+    </p>
+ 
+  	<h4>回饋意見：</h4>
+  	<p> 
+          <textarea name="ctl00$Description" rows="2" cols="20" id="Description">
+</textarea>
+    </p>
+ 
+  	<h4>回饋網址：</h4>
+  	<p class="colorRed txt11"><span id="lbApplicationPath">/indexHome.aspx</span></p>
+ 
+    <h4>驗證碼：</h4> 
+    
+    
+    <div class="input-group mb-3">
+        <img id="captcha2" src="Captcha.aspx" class="codeimg" alt="圖片驗證碼，移到下一個項目可讀取驗證碼" />   <button type="button" class="btn_code btn bg_gray " onclick="captcha2.src = 'Captcha.aspx?r=' + (new Date()).getTime()" tabindex="500"><i class="fa fa-refresh" aria-hidden="true"></i> 重新產生驗證碼</button>
+        <input name="ctl00$txtValidate2" type="text" id="txtValidate2" class="codeinput" onkeypress="return KeyPress(this, event);" />
+        
+    </div>
+ </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+        <input type="submit" name="ctl00$sendBtn" value="送出" id="sendBtn" class="btn btn-danger" />       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+    </form>
+</body>
+</html>

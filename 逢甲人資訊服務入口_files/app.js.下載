@@ -1,0 +1,1461 @@
+﻿(function() {
+
+    angular
+        .module('myapp', ['ngSanitize', 'duScroll', 'ngDialog', 'fcumodule', 'fcu.ui.bootstrap', 'mycal', 'infinite-scroll', 'ngRoute', 'myBanner'])
+        .filter('eventsOnDay', eventsOnDay)
+        .config(configFunc)
+        .factory('messageService', messageFunc)
+        .controller('mainController', mainControllerFunc)
+        .controller('bannerController', bannerControllerFunc)
+        .controller('appController', appControllerFunc)
+        .controller('msgController', msgControllerFunc)
+        .controller('msgPtController', msgPtControllerFunc)
+        .controller('calFilterController', calFilterControllerFunc)
+        .controller('orderController', orderControllerFunc);
+
+    //config
+    configFunc.$inject = ['$httpProvider', '$routeProvider'];
+    function configFunc($httpProvider, $routeProvider) {
+
+        $httpProvider.defaults.headers.post = {};
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+
+        $routeProvider.when('/', {
+            templateUrl: 'view/mainPage.htm?' + version,
+            title: '首頁（A990108）'
+        }).when('/mobile/:tab?/:msgid?', {
+            templateUrl: 'view/mainPage_m.htm?' + version,
+            title: '校園訊息（A990108）'
+        }).otherwise({
+            redirectTo: '/'
+        });
+    };
+
+    //factory
+    messageFunc.$inject = ['$http', '$q', '$location', '$rootScope'];
+    function messageFunc($http, $q, $location, $rootScope) {
+
+        var orderslist = null;
+        var _userid = null;
+        var msglist = null;
+        var _isMobile = false;
+        var _identity = 'GUEST';
+        var _logintype = '0';
+        var _banners = null;
+
+        var factoryobject = {
+            init: function() {
+                //console.log($location.path());
+                if ($location.path().lastIndexOf('/mobile', 0) === 0) {
+                    _isMobile = true;
+                } else {
+                    _isMobile = false;
+                }
+
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/GetInitData',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+
+                    var result = response.data.d;
+
+                    _userid = result.userid;
+                    _identity = result.identity;
+                    _logintype = result.type;
+                    _banners = result.banners;
+
+                    defer.resolve();
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            isMobile: function() {
+                return _isMobile;
+            },
+            getUserIdentity: function() {
+                return _identity;
+            },
+            getLoginType: function() {
+                return _logintype;
+            },
+            getUserID: function() {
+                return _userid;
+                /*var defer = $q.defer();
+
+                $http({
+                method: 'POST',
+                url: 'S9901_BannerHomePage.aspx/getUserID',
+                data: JSON.stringify({})
+                }).success(function(response, status, headers, config) {
+
+                    if (response.d == "") {
+                var undes = "";
+                }
+                else {
+                var undes = response.d;
+                }
+
+                    var resultinitData = undes;
+
+                    defer.resolve(resultinitData);
+
+                }).error(function(response, status, headers, config) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;*/
+            },
+            getBanners: function() {
+                return _banners;
+            },
+            getBannerItems: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getBannerItems',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+
+                    if (response.data.d == "") {
+                        var undes = 0;
+                    }
+                    else {
+                        var undes = response.data.d;
+                    }
+
+                    var resultinitData = undes;
+
+                    defer.resolve(resultinitData);
+
+                }, function(response) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;
+
+            },
+            getAppItems: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getAppItems',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+
+                    if (response.data.d == "") {
+                        var undes = 0;
+                    }
+                    else {
+                        var undes = response.data.d;
+                    }
+
+                    var resultinitData = undes;
+
+                    defer.resolve(resultinitData);
+
+                }, function(response) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;
+
+            },
+            getUnreadCount: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getUnreadCount',
+                    data: JSON.stringify({ selection: value.toString() })
+                }).then(function(response) {
+
+                    if (response.data.d == "") {
+                        var undes = 0;
+                    }
+                    else {
+                        var undes = response.data.d;
+                    }
+
+                    var resultinitData = undes;
+
+                    defer.resolve(resultinitData);
+
+                }, function(response) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;
+
+            },
+            getUnreadCounts: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getUnreadCounts',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+
+                    if (response.data.d == "") {
+                        var undes = 0;
+                    }
+                    else {
+                        var undes = response.data.d;
+                    }
+
+                    var resultinitData = undes;
+
+                    defer.resolve(resultinitData);
+
+                }, function(response) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;
+
+            },
+            getMessage: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getMessageData',
+                    data: JSON.stringify({ selection: value.toString() })
+                }).then(function(response) {
+
+                    if (response.data.d == "") {
+                        var undes = "";
+                    }
+                    else {
+                        var undes = response.data.d;
+                    }
+
+                    var resultinitData = undes;
+
+
+
+                    defer.resolve(resultinitData);
+
+                }, function(response) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;
+
+            },
+            updMessageCount: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/updMessageCount',
+                    data: JSON.stringify({ mes_tdocid: value })
+                }).then(function(response) {
+
+                    var result = response.data.d;
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            updReadDate: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/updReadDate',
+                    data: JSON.stringify({ tid: value.toString() })
+                }).then(function(response) {
+
+                    var result = response.data.d;
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            getOrder: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getOrder',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+
+                    if (response.data.d == "") {
+                        var undes = 0;
+                    }
+                    else {
+                        var undes = response.data.d;
+                    }
+
+                    var resultinitData = undes;
+
+                    defer.resolve(resultinitData);
+
+                }, function(response) {
+
+                    defer.reject('error');
+
+                });
+
+                return defer.promise;
+
+            },
+            saveOrder: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/saveOrder',
+                    data: JSON.stringify({ list: value })
+                }).then(function(response) {
+
+                    var result = response.data.d;
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            addLike: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/addLike',
+                    data: JSON.stringify({ tdocid: value })
+                }).then(function(response) {
+
+                    var result = response.data.d;
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            removeLike: function(value) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/removeLike',
+                    data: JSON.stringify({ tdocid: value })
+                }).then(function(response) {
+
+                    var result = response.data.d;
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            getPushMessage: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getPushMessage',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+
+                    var result = response.data.d;
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            GetMyFcuFavorite: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: '../webClientMyFcuMain.aspx/GetMyFavorite',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+                    var result = response.data.d;
+
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            GetMyFcuTag: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: '../webClientMyFcuMain.aspx/GetMyTag',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+                    var result = response.data.d;
+
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            getSignSummaryData: function() {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/getSignSummaryData',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+                    var result = JSON.parse(response.data.d);
+
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            hidePushMessage: function(push_seq) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/hidePushMessage',
+                    data: JSON.stringify({ push_seq: push_seq })
+                }).then(function(response) {
+                    var result = response.data.d;
+
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+            readPushMessage: function(push_seq) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/readPushMessage',
+                    data: JSON.stringify({ push_seq: push_seq })
+                }).then(function(response) {
+                    var result = response.data.d;
+
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            },
+
+            isShowPt20Msg: function(push_seq) {
+                var defer = $q.defer();
+
+                $http({
+                    method: 'POST',
+                    url: 'S9901_BannerHomePage.aspx/isShowPt20Msg',
+                    data: JSON.stringify({})
+                }).then(function(response) {
+                    var result = response.data.d;
+
+                    defer.resolve(result);
+
+                }, function(response) {
+                    defer.reject('error');
+                });
+
+                return defer.promise;
+            }
+        };
+
+        return factoryobject;
+    };
+
+
+    //controller
+    mainControllerFunc.$inject = ['$scope', 'messageService', '$window', '$location'];
+    function mainControllerFunc($scope, messageService, $window, $location) {
+
+        $scope.isMyFCU = $location.absUrl().toUpperCase().indexOf('MYFCU') > -1;
+        $scope.lang = lang;
+
+        var vm = this;
+        try {
+            vm.parentScope = window.parent.angular.element(window.frameElement).scope();
+        }
+        catch (e) {
+            vm.parentScope = null;
+        }
+        vm.config = {
+            banners: null,
+            apps: null,
+            msgViews: null,
+            myfcufav: null,
+            myfcutag: null
+        };
+
+        vm.mouseOver = overFn;
+        vm.mouseOut = leaveFn;
+
+        vm.goProg = goProgFn;
+        vm.insertOpenAdvLog = insertOpenAdvLogFn;
+        vm.insertOpenAppLog = insertOpenAppLogFn;
+        vm.goMyFavs = goMyFavsFn;
+        vm.goMyTags = goMyTagsFn;
+        vm.goMyTag = goMyTagFn;
+        vm.goSearch = goSearchFn;
+        vm.filterFavProgs = filterFavProgsFn;   //我的最愛排除個人常用
+
+        $scope.$on('$routeChangeSuccess', function(event, current, previous) {
+            $window.document.title = current.$$route.title;
+            //console.log(current);
+            $scope.current = current;
+        });
+
+        messageService.init().then(function(result) {
+
+            //$scope.isMobile = messageService.isMobile();
+            //$scope.userid = messageService.getUserid();
+            $scope.identity = messageService.getUserIdentity();
+            $scope.logintype = messageService.getLoginType();
+
+            /*
+            var ui = messageService.getUserIdentity();
+            //console.log(ui);
+            if (ui == 'TEACHER') {
+            vm.config.apps = appConfig.emp_apps;
+            } else if (ui == 'STUDENT') {
+            vm.config.apps = appConfig.stu_apps;
+            } else {
+            //DO NOTHING
+            }
+            */
+
+            /*
+            if ($scope.identity == 'TEACHER') {
+            vm.config.banners = appConfig.emp_banners;
+            } else if ($scope.identity == 'STUDENT') {
+            vm.config.banners = appConfig.stu_banners;
+            } else {
+            //DO NOTHING
+            }*/
+            if ($scope.identity == 'PARENT') {
+                $scope.msgBlockView = 'view/msgBlock_pt.htm?' + version;
+            } else {
+                $scope.msgBlockView = 'view/msgBlock.htm?' + version;
+            }
+
+            vm.config.banners = messageService.getBanners();
+            //            messageService.getBannerItems().then(function(result) {
+            //                vm.config.banners = result;
+            //            }, function(error) {
+            //                //DO NOTHING
+            //            });
+
+            if ($scope.isMyFCU) {
+                if ($scope.logintype != '0') {
+                    vm.config.myfcufav = vm.parentScope.mainCtrl.myfav;
+                    vm.config.myfcutag = vm.parentScope.mainCtrl.mytag.tree;
+                    //                    messageService.GetMyFcuFavorite().then(function(result) {
+                    //                        vm.config.myfcufav = result;
+                    //                    }, function(error) {
+
+                    //                    });
+                    //                    messageService.GetMyFcuTag().then(function(result) {
+                    //                        vm.config.myfcutag = result.tree;
+                    //                    }, function(error) {
+
+
+                    //                    });
+                }
+            }
+            else {
+                messageService.getAppItems().then(function(result) {
+                    vm.config.apps = result;
+                }, function(error) {
+
+                });
+            }
+
+
+            //vm.config.msgViews = messageService.isMobile() ? appConfig.msg_views_m : appConfig.msg_views;
+
+
+            $scope.finishBlockLoading = function() {
+                $scope.$broadcast('ServiceInit.finished');
+            }
+
+        }, function(error) {
+            console.log(error);
+            //window.location = "../infologin.aspx";
+        });
+
+
+        function overFn(app) {
+            app.isHover = true;
+        }
+
+        function leaveFn(app) {
+            app.isHover = false;
+        }
+
+        function goProgFn(pid) {
+            vm.parentScope.mainCtrl.goProg(pid);
+            vm.parentScope.$apply();
+        }
+
+        function insertOpenAdvLogFn(adv_no) {
+            //20200913廣告點擊紀錄 - 有問題待處理 - 無法觸發ng-click
+            console.log("aaa");
+            vm.parentScope.mainCtrl.insertOpenAdvLog(adv_no);
+            vm.parentScope.$apply();
+        }
+
+        function insertOpenAppLogFn(pid) {
+            vm.parentScope.mainCtrl.insertOpenAppLog(pid);
+            vm.parentScope.$apply();
+        }
+
+        function goMyFavsFn() {
+            vm.parentScope.mainCtrl.goMyFavs();
+            vm.parentScope.$apply();
+        }
+
+        function goMyTagsFn() {
+            vm.parentScope.mainCtrl.goMyTags();
+            vm.parentScope.$apply();
+        }
+
+        function goMyTagFn(tagid) {
+            vm.parentScope.mainCtrl.goTag(tagid);
+            vm.parentScope.$apply();
+        }
+
+        function goSearchFn() {
+            vm.parentScope.mainCtrl.config.search.name = vm.myfav_search;
+            vm.parentScope.mainCtrl.goSearch();
+            vm.parentScope.$apply();
+        }
+
+        function filterFavProgsFn(progs) {
+            return function(p) {
+
+                var j = 0;
+                for (var i = 0; i < vm.config.myfcufav.progs_use.length; i++) {
+                    if (p.name == vm.config.myfcufav.progs_use[i].name) {
+                        j++;
+
+                    }
+                }
+
+                if (j > 0) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            };
+        }
+    };
+
+    bannerControllerFunc.$inject = [];
+    function bannerControllerFunc() {
+
+        var vm = this;
+        vm.config = {
+            banners: appConfig.banners
+
+        };
+    };
+
+    appControllerFunc.$inject = ['messageService'];
+    function appControllerFunc(messageService) {
+
+        var vm = this;
+        vm.config = {
+            apps: []
+
+        };
+
+        //        messageService.getUserID().then(function(id) {
+
+        //            if (/^T{1}[0-9]+$/.test(id)) { //教職員
+        //                vm.config.apps = appConfig.emp_apps;
+        //            } else if (/^[DEMP]{1}[0-9]+$/.test(id)) { //學生
+        //                vm.config.apps = appConfig.stu_apps;
+        //            } else {
+        //                vm.config.apps = null;
+        //            }
+
+        //        }, function(error) {
+
+        //        });
+
+        /*
+        var ui = messageService.getUserIdentity();
+        if (ui == 'TEACHER') {
+        vm.config.apps = appConfig.emp_apps;
+        } else if (ui == 'STUDENT') {
+        vm.config.apps = appConfig.stu_apps;
+        } else {
+        vm.config.apps = null;
+        }
+        */
+
+        vm.mouseOver = overFn;
+        vm.mouseOut = leaveFn;
+
+        function overFn(app) {
+            app.isHover = true;
+        }
+
+        function leaveFn(app) {
+            app.isHover = false;
+        }
+
+    };
+
+    msgControllerFunc.$inject = ['$scope', '$document', 'messageService', 'ngDialog', '$timeout', '$sce'];
+    function msgControllerFunc($scope, $document, messageService, ngDialog, $timeout, $sce) {
+
+        var vm = this;
+        vm.config = {
+            list: null,
+            plist: null,
+            listStatus: 'LOADING',
+            //vlist: 'EMPTY',
+            dlimit: 15,
+            limit: 0,
+            msgViews: null, //(messageService.isMobile() ? appConfig.msg_views_m : appConfig.msg_views),
+            actTab: 4,
+            currTab: {
+                index: 4,
+                view: ''
+            },
+            unread: null,
+            orders: null,
+            url: 'http://news.fcu.edu.tw/wSite/ct',
+            search: { title: '' },
+            showMyMsg: false,
+            currMyMsg: null,
+            selectDelMyMsgIndex: null
+        };
+        //$scope.orders = 'EMPTY';
+        //console.log(messageService.isMobile());
+
+        vm.init = initFn;
+
+        vm.more = moreDataFn;
+        vm.less = lessDataFn;
+
+        vm.chgTab = changeTabFn;
+        vm.isCurrTab = isCurrentTabFn;
+        vm.getCurrTab = getActiveTabFn;
+
+        vm.setSubs = setSubscriptionsFn;
+
+        vm.msgClick = messageClickFn;
+
+        vm.getMsg = getMessageFn;
+        vm.getUredCnt = getUnreadCountFn;
+
+        vm.switchLike = switchLikeFn;
+        vm.addLike = addLikeFn;
+        vm.rmvLike = removeLikeFn;
+
+        vm.openMyMsg = openMyMessageFn;
+        vm.deleteMyMsg = deleteMyMessageFn;
+        vm.confirmDelMyMsg = confirmDelMyMessageFn;
+        vm.openNotesSign = openNotesSignFn;
+
+        vm.to_trusted = to_trustedFn;
+
+        vm.sort = sortFn;   //資料排序
+
+        $scope.$on('ServiceInit.finished', function(event) {
+            vm.init();
+        });
+
+        function initFn() {
+            vm.config.msgViews = messageService.isMobile() ? appConfig.msg_views_m : appConfig.msg_views;
+            //console.log($scope.current);
+            /*if ($scope.logintype != '0') {
+            messageService.getUnreadCounts().then(function(list) {
+
+                    vm.config.unread = list;
+            }, function(error) {
+            vm.config.unread = null;
+            });
+            }*/
+
+            var ui = messageService.getUserIdentity();
+            var defaultTab = 4;
+            if (ui == 'TEACHER') {
+                defaultTab = 9;
+            } else if (ui == 'STUDENT') {
+                defaultTab = 5;
+            }
+
+            var routeTab = /^[0-9]+$/.test($scope.current.params.tab) && $scope.current.params.tab ? parseInt($scope.current.params.tab) : defaultTab;
+            //console.log(routeTab);
+            if (ui == 'TEACHER') {
+                defaultTab = routeTab;
+            } else if (ui == 'STUDENT') {
+                defaultTab = routeTab;
+            } else {
+                for (var i = 0; i < vm.config.msgViews.length; i++) {
+                    var gr = false;
+                    if (vm.config.msgViews[i].value == routeTab && vm.config.msgViews[i].guest == true) {
+                        defaultTab = routeTab;
+                        gr = true;
+                    }
+                    if (!gr) {
+                        defaultTab = 6;
+                    }
+                }
+            }
+            //console.log(ui);
+            //console.log(defaultTab);
+            vm.config.actTab = defaultTab;
+            vm.config.currTab.index = defaultTab;
+
+            var nowPage = defaultTab;
+
+            vm.getMsg(nowPage);
+
+            //console.log($scope.logintype);
+
+            //20210223我的訂閱已無使用
+            //            if ($scope.logintype != '0') {
+            //                messageService.getOrder().then(function(list) {
+
+            //                    vm.config.orders = list;
+            //                    messageService.orderslist = list;
+
+            //                }, function(error) {
+            //                    vm.config.orders = null;
+            //                });
+            //            }
+
+            vm.config.currTab.view = vm.config.msgViews[nowPage].page + '?' + version;
+        }
+
+        $scope.$on('ngDialog.closed', function(e, ngDialog) {
+            if (vm.isCurrTab(2)) {
+                vm.getMsg(2);
+            }
+            vm.getUredCnt(2);
+        });
+
+        $scope.$on('calendarCtrl.finished', function() {
+            messageService.getMessage(4).then(function(list) {
+
+                vm.config.list = list;
+                $scope.waitChildInit = $timeout(function() {
+                    $scope.$broadcast('GetMsgList.finished', list);
+                });
+                if (list != null) {
+                    vm.config.listStatus = 'SUCCESS';
+                } else {
+                    vm.config.listStatus = 'NODATA';
+                }
+                vm.config.limit = vm.config.dlimit;
+
+            }, function(error) {
+                vm.config.listStatus = 'ERROR';
+            });
+        });
+
+        function moreDataFn() {
+
+            var rlimit = vm.config.limit + vm.config.dlimit;
+
+            if (vm.config.list) {
+                if (rlimit > vm.config.list.length) {
+                    rlimit = vm.config.list.length;
+                }
+
+                limitFn(rlimit);
+            }
+            //var elem = angular.element(document.getElementById('msgBlock'));
+            //$scope.scrollToElem = function() {
+            //    $document.scrollToElementAnimated(elem);
+            //}
+        }
+
+        function lessDataFn() {
+
+            //var elem = angular.element(document.getElementById('msgBlock'));
+            //$scope.scrollToElem = function() {
+            //    $document.scrollToElementAnimated(elem);
+            //}
+
+            limitFn(vm.config.dlimit);
+        }
+
+        function limitFn(value) {
+            vm.config.limit = value;
+        }
+
+        function changeTabFn(selection) {
+
+            if (!vm.isCurrTab(selection)) {
+
+                vm.daterange = "10";
+
+                vm.config.currTab.index = selection;
+
+                //vm.config.listStatus = 'LOADING';
+
+                vm.config.currTab.view = vm.config.msgViews[selection].page + '?' + version;
+                vm.getMsg(selection);
+
+
+
+            }
+        }
+
+        function isCurrentTabFn(value) {
+
+            if (value == vm.getCurrTab()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function getActiveTabFn() {
+            return vm.config.currTab.index;
+        }
+
+        function setSubscriptionsFn() {
+
+            ngDialog.open({
+                template: 'view/subsEditPage.htm',
+                controller: 'orderController as orderCtrl'
+            });
+
+        }
+
+        function messageClickFn(msg) {
+
+            msg.count++;
+
+            var msgid = msg.id;
+
+            messageService.updMessageCount(msgid).then(function() {
+
+                if (messageService.getUserIdentity() != 'GUEST' && (vm.getCurrTab() == '0' || vm.getCurrTab() == '1' || vm.getCurrTab() == '2')) {
+                    messageService.updReadDate(vm.getCurrTab());
+                    vm.getUredCnt(vm.getCurrTab());
+                }
+
+            }, function(error) {
+
+            });
+
+
+        }
+
+        function getUnreadCountFn(selection) {
+            /*messageService.getUnreadCount(selection).then(function(value) {
+
+                vm.config.unread[selection].count = value;
+
+            }, function(error) {
+
+            });*/
+        }
+
+        function getMessageFn(selection) {
+            vm.config.list = null;
+            vm.config.listStatus = 'LOADING';
+            switch (selection) {
+                case 4:
+                    break;
+                case 5:
+                    vm.config.showMyMsg = false;
+                    messageService.getPushMessage().then(function(list) {
+
+                        vm.config.list = list;
+
+                        if (list != null) {
+                            vm.config.listStatus = 'SUCCESS';
+                        } else {
+                            vm.config.listStatus = 'NODATA';
+                        }
+                        vm.config.limit = vm.config.dlimit;
+
+                    }, function(error) {
+                        vm.config.listStatus = 'ERROR';
+                    });
+                    break;
+                case 7:
+                    messageService.getSignSummaryData().then(function(result) {
+                        vm.signlist = result;
+
+                        if (result != null) {
+                            vm.config.listStatus = 'SUCCESS';
+                        } else {
+                            vm.config.listStatus = 'NODATA';
+                        }
+
+                    }, function(error) {
+                        vm.config.listStatus = 'ERROR';
+                    });
+                    break;
+                default:
+                    messageService.getMessage(selection).then(function(list) {
+
+                        vm.config.list = list;
+                        /*$scope.waitChildInit = $timeout(function() {
+                        $scope.$broadcast('GetMsgList.finished', list);
+                        });*/
+                        if (list != null) {
+                            vm.config.listStatus = 'SUCCESS';
+                        } else {
+                            vm.config.listStatus = 'NODATA';
+                        }
+                        vm.config.limit = vm.config.dlimit;
+
+                        //                        if (selection == '10' || selection == '101' || selection == '102' || selection == '103') {
+                        //                            sortFn('sdate');
+                        //                            sortFn('sdate');
+                        //                        }
+                        //                        else {
+                        //sortFn('');
+                        //                        }
+
+                        //                        sortFn('vdsdate');
+                        //                        sortFn('vdsdate');
+
+                    }, function(error) {
+                        vm.config.listStatus = 'ERROR';
+                    });
+                    break;
+            }
+        }
+
+        function to_trustedFn(html_code) {
+            return $sce.trustAsHtml(html_code);
+        }
+
+        function sortFn(predicate) {
+            vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
+            vm.predicate = predicate;
+        };
+
+        function switchLikeFn(msg) {
+
+            if (msg.like) {
+                messageService.removeLike(msg.id).then(function(result) {
+
+                    if (result) {
+                        msg.like = false;
+                        vm.config.unread[3].count--;
+                    }
+                }, function(error) {
+
+                });
+            } else {
+                messageService.addLike(msg.id).then(function(result) {
+
+                    if (result) {
+                        msg.like = true;
+                        vm.config.unread[3].count++;
+                    }
+                }, function(error) {
+
+                });
+            }
+        }
+
+        function addLikeFn(index) {
+
+            messageService.addLike(vm.config.list[index].id).then(function(result) {
+
+                if (result) {
+                    vm.config.list[index].like = true;
+                    vm.config.unread[3].count++;
+                }
+            }, function(error) {
+
+            });
+        }
+
+        function removeLikeFn(index) {
+
+            messageService.removeLike(vm.config.list[index].id).then(function(result) {
+
+                if (result) {
+                    vm.config.list[index].like = false;
+                    vm.config.unread[3].count--;
+                }
+            }, function(error) {
+
+            });
+        }
+
+        function openMyMessageFn(msg) {
+            vm.config.currMyMsg = msg;
+            vm.config.showMyMsg = true;
+
+            //            var elem = angular.element(document.getElementById('myMsg'));
+            //            $scope.scrollToElem = function() {
+            //                $document.scrollToElementAnimated(elem);
+            //            }
+            var index = vm.config.list.indexOf(msg);
+            messageService.readPushMessage(vm.config.list[index].seq).then(function(result) {
+                if (result) {
+                    vm.config.list[index].read_flag = 'Y';
+                }
+            }, function(error) {
+                //
+            });
+        }
+
+        function deleteMyMessageFn(index) {
+            vm.config.selectDelMyMsgIndex = index;
+
+            ngDialog.open({
+                template: 'view/delMsgConfirmPage.htm',
+                scope: $scope
+            });
+        }
+
+        function confirmDelMyMessageFn() {
+            var index = vm.config.selectDelMyMsgIndex;
+            messageService.hidePushMessage(vm.config.list[index].seq).then(function(result) {
+                if (result) {
+                    vm.config.list.splice(index, 1);
+                }
+            }, function(error) {
+                //
+            });
+            ngDialog.close('ngdialog1');
+        }
+
+        function openNotesSignFn(item) {
+            if (item.WebReady) {
+
+                var myfcu = '/main/appsToNotes.aspx?url={0}';
+
+                //依使用者畫面寬度自動決定以行動版還是web版顯示
+                var notesurl = encodeURIComponent("appcenter.nsf/redirectTo?OpenAgent&system=" + item.SystemName + "&cname=" + item.CNames + "&jobcode=" + item.Params + "&width=" + document.body.clientWidth);
+
+                //強制以行動版顯示
+                //var notesurl = encodeURIComponent("appcenter.nsf/redirectTo?OpenAgent&system=" + item.SystemName + "&cname=" + item.CNames + "&jobcode=" + item.Params + "&view=m");
+
+                //強制以web版顯示
+                //var notesurl = encodeURIComponent("appcenter.nsf/redirectTo?OpenAgent&system=" + item.SystemName + "&cname=" + item.CNames + "&jobcode=" + item.Params + "&view=w");
+
+                window.open(myfcu.replace("{0}", notesurl));
+
+            }
+        }
+    };
+
+    msgPtControllerFunc.$inject = ['$scope', '$document', 'messageService', 'ngDialog', '$timeout', '$sce'];
+    function msgPtControllerFunc($scope, $document, messageService, ngDialog, $timeout, $sce) {
+
+        var vm = this;
+
+        messageService.isShowPt20Msg().then(function(result) {
+            if (result) {
+                alert('基於對貴子弟已年滿18歲為成人的尊重，本平台上除各項公開資訊外，學生學習表現之個人資訊查詢功能暫且關閉，需請貴子弟先執行系統啟動作業後，方可開放家長查詢，敬請配合，謝謝！\n★啟用網頁位置：MYFCU逢甲人資訊服務入口--> 我的逢甲--> 服務平台--> 家長資訊系統啟動作業');
+            }
+        }, function(error) {
+            //
+        });
+
+    };
+
+    orderControllerFunc.$inject = ['$scope', '$document', 'messageService', 'ngDialog'];
+    function orderControllerFunc($scope, $document, messageService, ngDialog) {
+
+        var vm = this;
+        vm.config = {
+            orders: null,
+            saving: false
+        };
+
+        vm.config.orders = angular.copy(messageService.orderslist);
+
+        vm.odrItmClick = orderItemClickFn;
+        vm.orderSubmit = orderSubmitFn;
+
+        function orderItemClickFn(index) {
+
+            vm.config.orders[index].ordered = !vm.config.orders[index].ordered;
+
+        }
+
+        function orderSubmitFn() {
+
+            vm.config.saving = true;
+
+            var selectedItems = vm.config.orders.filter(function(item) {
+
+                return item.ordered == true;
+            });
+
+            messageService.saveOrder(selectedItems).then(function(result) {
+
+                if (result) {
+                    messageService.orderslist = vm.config.orders;
+                    ngDialog.close('ngdialog1');
+                    vm.config.saving = false;
+                }
+            }, function(error) {
+
+            });
+
+        }
+
+    };
+
+    calFilterControllerFunc.$inject = ['$scope', '$filter', '$timeout'];
+    function calFilterControllerFunc($scope, $filter, $timeout) {
+
+        $scope.lang = lang;
+        var vm = this;
+        vm.config = {
+            dayslist: [],
+            msglist: null,
+            select_day: '',
+            selected_days: 3,
+            sday: '',
+            eday: '',
+            dlimit: 7,
+            limit: 7,
+            calendarOpen: false,
+            calOpened: false
+        };
+
+        vm.formatDate = formatDateFn;
+        vm.chgDays = changeDaysFn;
+        vm.isBetween = isDayBetweenDatesFn;
+        vm.selectDays = setSelectDaysFn;
+        vm.getCalDays = calculateDaysFn;
+        vm.isSelectDays = isSelectedDaysFn;
+        //vm.getTodayList = getTodayListFn;
+        //vm.getFltrMsgs = getFilteredMessagesFn;
+        vm.more = moreDataFn;
+        vm.mcSwitch = mobileCalendarSwitchFn;
+
+        $scope.calendar = {
+            select_day: moment(),
+            days: vm.config.selected_days
+        };
+
+        $scope.$on('GetMsgList.finished', function(event, list) {
+            //console.log('GetMsgList.success:' + list);
+            $timeout.cancel($scope.waitChildInit);
+            vm.config.msglist = list;
+            vm.chgDays();
+        });
+
+        /*$scope.$watch("calendar", function(newValue, oldValue) {
+        if (newValue.select_day.month() != oldValue.select_day.month()) {
+        $scope.calendar.days = vm.getCalDays(vm.config.selected_days);
+        }
+        vm.chgDays();
+        console.log('$watch(calendar)');
+        },true);*/
+
+        $scope.$watch("calendar.select_day", function(newValue, oldValue) {
+            if (newValue != oldValue) {
+                //console.log(oldValue); console.log(newValue);
+                if (newValue.month() != oldValue.month()) {
+                    $scope.calendar.days = vm.getCalDays(vm.config.selected_days);
+                    //console.log((newValue.month() + 1) + '&' + (oldValue.month() + 1) + ' -> month changed:' + newValue + '-' + vm.getCalDays(vm.config.selected_days));
+                }
+                vm.chgDays();
+                //console.log('$watch(select_day)');
+
+            }
+        });
+
+        $scope.$watch("calendar.days", function(newValue, oldValue) {
+            if (newValue != oldValue) {
+                vm.chgDays();
+                //console.log('$watch(days)');
+            }
+        });
+
+        function formatDateFn(date) {
+            var dateOut = new Date(date);
+            return dateOut;
+        }
+
+        function changeDaysFn() {
+            //if ($scope.calendar.days != vm.config.selected_days || $scope.calendar.select_day != vm.config.select_day) {
+            //console.log('Run changeDaysFn.:' + vm.config.msglist.length);
+            var result = [];
+            for (var d = 0; d < $scope.calendar.days; d++) {
+                var dd = $scope.calendar.select_day.clone().add(d, 'd');
+                result.push({ day: $scope.calendar.select_day.clone().add(d, 'd'), msgs: $filter('eventsOnDay')(vm.config.msglist, dd) });
+            }
+            vm.config.dayslist = result;
+            limitFn(vm.config.dlimit);
+            //vm.config.select_day = $scope.calendar.select_day;
+            //vm.config.selected_days = $scope.calendar.days;
+            //}
+        }
+
+        function setSelectDaysFn(idays) {
+            vm.config.selected_days = idays;
+            $scope.calendar.days = vm.getCalDays(idays);
+        }
+
+        function calculateDaysFn(idays) {
+            //vm.config.selected_days = idays;
+            switch (idays) {
+                case 'month':
+                    return $scope.calendar.select_day.daysInMonth();
+                    break;
+                default:
+                    return idays;
+                    break;
+            }
+        }
+
+        function isSelectedDaysFn(value) {
+            return (vm.config.selected_days == value);
+        }
+
+        function limitFn(value) {
+            vm.config.limit = value;
+        }
+
+        function moreDataFn(length) {
+
+            var rlimit = vm.config.limit + vm.config.dlimit;
+
+            if (rlimit > length) {
+                rlimit = length;
+            }
+
+            limitFn(rlimit);
+
+        }
+
+        function mobileCalendarSwitchFn() {
+            vm.config.calOpened = true;
+            vm.config.calendarOpen = !vm.config.calendarOpen;
+        }
+
+        /*function getFilteredMessagesFn(list, day, jj) {
+        //console.log('getFM:' + list.length);
+        //console.log(jj);
+        return $filter('eventsOnDay')(list, day);
+        }*/
+
+        function isDayBetweenDatesFn(day, sdate, edate) {
+
+            var tday = _removeTime(day);
+            var sday = _removeTime(moment(sdate)) - 1;
+            var eday = _removeTime(moment(edate));
+
+            if (eday.isSame(_removeTime(moment('2099/12/30')))) {
+                eday = sday + 86400001;
+            } else {
+                eday = _removeTime(moment(edate)) + 86400000;
+            }
+
+            //console.log(day + ' in ' + sday.toString() + ' to ' + eday.toString() + ' -> ' + day.isBetween(sday, eday, 'day'));
+
+            return tday.isBetween(sday, eday, 'day');
+        }
+
+        function _removeTime(date) {
+            return date.hour(0).minute(0).second(0).millisecond(0);
+        }
+
+        $scope.$emit('calendarCtrl.finished');
+    };
+
+    function eventsOnDay($filter) {
+        //console.log('fts:');
+        var rmTime = function _removeTime(date) {
+            return date.hour(0).minute(0).second(0).millisecond(0);
+        };
+
+        var isDayBetweenDates = function _isDayBetweenDates(day, sdate, edate) {
+
+            var tday = rmTime(moment(day));
+            var sday = rmTime(moment(sdate)) - 1;
+            var eday = rmTime(moment(edate));
+
+            if (eday.isSame(rmTime(moment('2099/12/30')))) {
+                eday = sday + 86400001;
+            } else {
+                eday = rmTime(moment(edate)) + 86400000;
+            }
+
+            //console.log(tday.toString() + ' in ' + sday.toString() + ' to ' + eday.toString() + ' -> ' + tday.isBetween(sday, eday, 'day'));
+
+            return tday.isBetween(sday, eday, 'day');
+        };
+
+        return function(input, day) {
+            var result = [];
+            if (input != null) {
+                //console.log('filter');
+                //console.log('ft:' + day.format('MM月DD日 dddd') + '-' + input);
+                for (var i = 0; i < input.length; i++) {
+                    //console.log(input[i].title);
+                    if (isDayBetweenDates(day, input[i].sdate, input[i].edate)) {
+                        result.push(input[i]); //{ id: input[i].id, node: input[i].node, url: input[i].url, title: input[i].title, sdate: input[i].sdate, edate: input[i].edate });
+                    }
+                }
+                //console.log(result.length + "/" + input.length);
+            }
+            return result;
+        };
+    };
+
+})();

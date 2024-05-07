@@ -1,0 +1,822 @@
+﻿var fcuuibootstrap = angular.module("fcu.ui.bootstrap", ['fcumodule', 'ui.bootstrap', 'fcu.ui.bootstrap.tpls']);
+angular.module('fcu.ui.bootstrap.tpls', ['template/modal/image.html', 'template/modal/confirm.html', 'template/modal/alert.html']);
+
+//fcuuibootstrap.value('eepParams',
+//{
+//    isEng: fcuUtil.isEng(),
+//    root: fcuUtil.getEEPRoot()
+//});
+
+/**
+
+Directive
+
+**/
+
+fcuuibootstrap.directive('imageGallery', ['$templateCache', function($templateCache)
+{
+    return {
+        restrict: 'A',
+        scope: { images: '=' },
+        controller: ['$scope', '$modal', function($scope, $modal)
+        {
+            $scope.open = function(index)
+            {
+
+                var modalInstance = $modal.open({
+                    //templateUrl: 'template/modal/image.html',
+                    template: $templateCache.get('template/modal/image.html'),
+                    controller: 'imageModalInstanceCtrl',
+                    windowClass: 'fcu-modal image-modal',
+                    resolve: {
+                        imglist: function()
+                        {
+                            return { showindex: index, items: $scope.images };
+                        }
+                    }
+                });
+            }
+
+
+        } ],
+        template: "<ul class='image-icon'>" +
+                  " <li ng-repeat='image in images'>" +
+                  "     <a href ng-click='open($index)' title='{{image.title}}'><img ng-src='{{image.icon}}' /></a> </li>" +
+                  "</ul>",
+        replace: true,
+        link: function(scope, element, attrs)
+        {
+
+
+        }
+    }
+
+} ]);
+
+fcuuibootstrap.controller("imageModalInstanceCtrl", ['$scope', '$modalInstance', 'imglist', function($scope, $modalInstance, imglist)
+{
+    $scope.imgList = imglist;
+    var maxindex = imglist.items.length - 1;
+
+    $scope.prevImage = function()
+    {
+        if ($scope.imgList.showindex == 0)
+        {
+            $scope.imgList.showindex = maxindex;
+        }
+        else
+        {
+            $scope.imgList.showindex = $scope.imgList.showindex - 1;
+        }
+
+    }
+    $scope.nextImage = function()
+    {
+        if ($scope.imgList.showindex < maxindex)
+        {
+            $scope.imgList.showindex = $scope.imgList.showindex + 1;
+        }
+        else
+        {
+            $scope.imgList.showindex = 0;
+        }
+
+    }
+
+    $scope.closeImage = function()
+    {
+        $modalInstance.dismiss();
+    }
+
+} ]);
+
+fcuuibootstrap.directive('confirmModal', ['$modal', '$templateCache', function($modal, $templateCache)
+{
+    return {
+        restrict: 'A',
+        scope: {
+            confirmTitle: '@',
+            confirmTemplate: '@',
+            confirmText: '@',
+            contentModel: '=',
+            okText: '@',
+            cancelText: '@',
+            okType: '@',
+            onOk: '&',
+            onCancel: '&',
+            hideFooter: '=',
+            backdropClose: '=',
+            windowClass: '@'
+        },
+        controller: ['$scope', function($scope)
+        {
+            $scope.isContentLoaded = false;
+            $scope.setContentLoaded = function()
+            {
+                $scope.isContentLoaded = true;
+            }
+
+        } ],
+        link: function(scope, element, attrs)
+        {
+
+            element.bind('click', function()
+            {
+                element[0].blur();
+                var modalInstance = $modal.open({
+                    //templateUrl: 'template/modal/confirm.html',
+                    template: $templateCache.get('template/modal/confirm.html'),
+                    controller: 'confirmModalInstanceCtrl',
+                    scope: scope,
+                    windowClass: scope.windowClass ? ('fcu-modal confirm-modal ' + scope.windowClass) : 'fcu-modal confirm-modal',
+                    backdrop: !!scope.backdropClose || 'static'
+                });
+
+                modalInstance.result.then(function()
+                {
+
+                    scope.onOk();
+                }, function()
+                {
+                    scope.onCancel();
+                });
+            });
+        }
+    }
+
+} ]);
+
+fcuuibootstrap.factory("modal", modalFn);
+
+modalFn.$inject = ['$modal', '$templateCache', '$rootScope'];
+function modalFn($modal, $templateCache, $rootScope)
+{
+    var obj = {};
+    obj.confirm = confirmFn;
+    obj.alert = alertFn;
+
+    function confirmFn(param)
+    {
+        var scope = $rootScope.$new();
+        angular.extend(scope, param);
+
+        var modalInstance = $modal.open({
+            template: $templateCache.get('template/modal/confirm.html'),
+            controller: 'confirmModalInstanceCtrl',
+            scope: scope,
+            windowClass: scope.windowClass ? ('fcu-modal confirm-modal ' + scope.windowClass) : 'fcu-modal confirm-modal',
+            backdrop: !!scope.backdropClose || 'static'
+        });
+
+        return modalInstance.result;
+    }
+
+    function alertFn(param)
+    {
+        var scope = $rootScope.$new();
+        angular.extend(scope, param);
+
+        var modalInstance = $modal.open({
+            template: $templateCache.get('template/modal/alert.html'),
+            controller: 'alertModalInstanceCtrl',
+            scope: scope,
+            windowClass: scope.windowClass ? ('fcu-modal alert-modal ' + scope.windowClass) : 'fcu-modal alert-modal',
+            backdrop: !!scope.backdropClose || true
+        });
+
+        return modalInstance.result;
+
+    }
+
+
+    return obj;
+}
+
+
+fcuuibootstrap.controller("confirmModalInstanceCtrl", ['$scope', '$modalInstance', function($scope, $modalInstance)
+{
+    $scope.isContentLoaded = false;
+    $scope.setContentLoaded = function()
+    {
+        $scope.isContentLoaded = true;
+    }
+
+    $scope.ok = function()
+    {
+        $modalInstance.close();
+    }
+    $scope.cancel = function()
+    {
+        $modalInstance.dismiss();
+    }
+} ]);
+
+fcuuibootstrap.controller("alertModalInstanceCtrl", ['$scope', '$modalInstance', function($scope, $modalInstance)
+{
+    $scope.isContentLoaded = false;
+    $scope.setContentLoaded = function()
+    {
+        $scope.isContentLoaded = true;
+    }
+
+    $scope.ok = function()
+    {
+        $modalInstance.close();
+    }
+} ]);
+
+
+fcuuibootstrap.directive('whenScrolled', [function()
+{
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs)
+        {
+            var raw = element[0];
+
+            var execHeight = 0;
+
+            element.bind('scroll', function()
+            {
+                var currHeight = raw.scrollTop + raw.offsetHeight;
+                if (currHeight >= raw.scrollHeight)
+                {
+                    if (currHeight != execHeight)
+                    {
+                        execHeight = currHeight;
+                        scope.$apply(attrs.whenScrolled);
+                    }
+
+                }
+            });
+
+        }
+    };
+
+} ]);
+
+
+fcuuibootstrap.directive('feedbackModal', ['$modal', '$templateCache', 'eepParams', 'modal', function($modal, $templateCache, eepParams, modal)
+{
+    return {
+        restrict: 'A',
+        scope: {
+
+    },
+    controller: ['$rootScope', '$scope', 'webService', '$q', '$http', function($rootScope, $scope, webService, $q, $http)
+    {
+        $scope.isContentLoaded = false;
+        $scope.setContentLoaded = function()
+        {
+            $scope.isContentLoaded = true;
+        }
+
+        $scope.doPost = function(service, param)
+        {
+
+            return webService.post(service, param);
+
+        }
+
+        $scope.doPostForm = function(service, param)
+        {
+
+
+            var defer = $q.defer();
+
+            $http({
+                method: 'POST',
+                url: service,
+                data: param,
+                transformRequest: function(obj)
+                {
+                    var str = [];
+                    for (var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response)
+            {
+
+                var result = response.data;
+
+                defer.resolve(result);
+            },
+            function(response)
+            {
+                defer.reject('error');
+
+            })
+
+            return defer.promise;
+        }
+
+
+        $scope.isLoading = function()
+        {
+            return $rootScope.networkStatus == 1;
+        }
+
+
+    } ],
+    link: function(scope, element, attrs)
+    {
+
+        var text = {
+            title: "意見回饋",
+            message: "您的意見已送出，屆時若有回應，請至我的逢甲/意見回饋系統內確認處理狀況。謝謝!"
+        }
+
+        if (eepParams.isEng)
+        {
+            text.title = "Suggestions and Feedback";
+            text.message = "Your feedback have been submitted and will be forwarded to the relevant unit(s) for processing. When it has been processed, responses will be answered in APPs/feedback-response system. Please re-access to Apps and check. Thanks.";
+        }
+
+        element.addClass("feedbackbtn");
+
+        var root = eepParams.root;
+        scope.confirmTitle = text.title;
+        scope.confirmTemplate = root + "/S9000/view/feedback-modalcontent.aspx";
+
+        var formtitle = document.title.replace(/\(/g, "（").replace(/\)/g, "）").replace(/）/g, "");
+        var system = formtitle.split("（");
+        scope.setProcess = function(selectednodes)
+        {
+            if (selectednodes.length != 0)
+            {
+                scope.feedback.title = selectednodes[0].text
+                scope.feedback.code = selectednodes[0].value;
+            }
+        }
+
+        element.bind('click', function()
+        {
+            scope.feedback = { title: "", code: "", catalog: "", type: "1", content: "", rate: { value: "" }, user: "", date: "", idtype: "" }
+
+            if (system.length == 2)
+            {
+                scope.feedback.title = system[0]
+                scope.feedback.code = system[1];
+            }
+
+            scope.doPost(scope.confirmTemplate + "/Init", {}).then(function(data)
+            {
+                scope.feedback.user = data.user;
+                scope.feedback.date = data.date;
+                scope.feedback.idtype = data.type;
+
+            }, function() { });
+
+            element[0].blur();
+
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('template/modal/confirm.html'),
+                controller: 'feedbackModalInstanceCtrl',
+                scope: scope,
+                windowClass: 'fcu-modal feedback-modal',
+                backdrop: 'static'
+            });
+
+            modalInstance.result.then(function()
+            {
+                if (scope.feedback.catalog == "forFcu")
+                {
+                    modal.alert({ alertTemplate: "feedbackinfo.html" });
+
+                } else
+                {
+                    modal.alert({ alertText: text.message });
+                }
+
+
+            }, function()
+            {
+
+            });
+        });
+    }
+}
+
+} ]);
+
+fcuuibootstrap.controller("feedbackModalInstanceCtrl", ['$scope', '$modalInstance', 'eepParams', 'modal', function($scope, $modalInstance, eepParams, modal)
+{
+    var text = {
+        noSystem: "請選擇作業！",
+        noContent: "請填寫內容或評分後再送出！",
+        noContent2: "請填寫內容！",
+        error: "資料傳送失敗,再重試一次！",
+        typename1: "校務建言",
+        typename2: "校務資訊應用網",
+        noCatalog: "請選擇回饋意見類別！"
+    }
+
+    if (eepParams.isEng)
+    {
+        text.noSystem = "Please select the system!";
+        text.noContent = "When you submit a form, please double check that comments or score will be filled in.";
+        text.noContent2 = "Please fill the required fields (comments).",
+        text.error = "An error occurred, please try again！";
+        text.typename1 = "Suggestions for university operations and development",
+        text.typename2 = "Suggestion for application services";
+        text.noCatalog = "Please select the feedback category.";
+    }
+
+    var modaltitle = $scope.confirmTitle;
+    var title = $scope.feedback.title;
+    var code = $scope.feedback.code;
+
+    $scope.contentUrl = "";
+
+    $scope.selCatalog = function()
+    {
+        if ($scope.feedback.catalog)
+        {
+            var typename = "";
+
+            switch ($scope.feedback.catalog)
+            {
+                case "forFcu":
+                    typename = text.typename1;
+                    break;
+                case "forSystem":
+                    typename = text.typename2;
+                    break;
+                default:
+                    break;
+            }
+            $scope.confirmTitle = modaltitle + "(" + typename + ")";
+
+            $scope.contentUrl = $scope.feedback.catalog + ".html";
+        }
+    }
+
+    $scope.reset = function()
+    {
+        $scope.confirmTitle = modaltitle;
+        $scope.contentUrl = "";
+        $scope.feedback.catalog = "";
+        $scope.feedback.content = "";
+        $scope.feedback.rate.value = "";
+        $scope.feedback.type = "1";
+        $scope.feedback.title = title;
+        $scope.feedback.code = code;
+    }
+
+
+    $scope.ok = function()
+    {
+        if ($scope.feedback.catalog == undefined || $scope.feedback.catalog == "")
+        {            
+            modal.alert({ alertText: text.noCatalog });
+            return;
+
+        }
+
+
+        if ($scope.feedback.catalog == "forFcu")
+        {
+            if ($scope.feedback.content == "")
+            {               
+                modal.alert({ alertText: text.noContent2 });
+                return;
+            }
+
+        } else
+        {
+
+            if ($scope.feedback.type == "1" && $scope.feedback.code == "")
+            {
+                
+                modal.alert({ alertText: text.noSystem });
+                return;
+
+            }
+
+
+            if ($scope.feedback.content == "" && $scope.feedback.rate.value == "")
+            {
+                
+                modal.alert({ alertText: text.noContent });
+                return;
+            }
+
+        }
+
+
+        $scope.doPostForm(eepParams.root + "/S9000/feedback.ashx",
+                { feedbackcontent: $scope.feedback.content,
+                    pagename: ($scope.feedback.catalog == "forFcu") ? "fcu0000" : ($scope.feedback.type == "2") ? "A999999" : $scope.feedback.code,
+                    rate: $scope.feedback.rate.value
+                }).then(function(data)
+                {
+                    if (data == "1")
+                    {
+                        $modalInstance.close();
+                    } else
+                    {
+                        alert(text.error);
+                    }
+
+                }, function() { });
+
+    }
+
+    $scope.cancel = function()
+    {
+        $modalInstance.dismiss();
+    }
+} ]);
+
+
+
+fcuuibootstrap.directive('treeModal', ['$modal', '$templateCache', 'eepParams', function($modal, $templateCache, eepParams)
+{
+    var text = {
+        title: "選單",
+        rootText: "逢甲大學",
+        CLTitle: "諮詢地點參照",
+        unitTitle: "請選擇單位",
+        appsTitle: "請選擇作業名稱",
+        appsRootText: "作業名稱",
+        countryTitle: "請選擇國家",
+        countryRootText: "國家",
+    }
+
+    if (eepParams.isEng)
+    {
+        text.title = "Menu";
+        text.rootText = "FCU";
+        text.CLTitle = "Consulting Location";
+        text.unitTitle= "請選擇單位";
+        text.appsTitle = "Please select the system name",
+        text.appsRootText = "System";
+        text.countryTitle = "請選擇國家";
+        text.countryRootText = "國家";
+    }
+
+
+
+    return {
+        restrict: 'A',
+        scope: {
+            customTitle: '@confirmTitle',
+            customTemplate: '@confirmTemplate',
+            confirmText: '@',
+            contentModel: '=',
+            okText: '@',
+            cancelText: '@',
+            okType: '@',
+            onOk: '&',
+            onCancel: '&',
+            customRootText: '@rootText',
+            customServiceUrl: '@serviceUrl',
+            multiSelect: '=',
+            customUseParent: '=useParent',
+            customLeafIcon: '@leafIcon'
+        },
+        controller: ['$scope', function($scope)
+        {
+            $scope.selectednodes = { value: [] };
+
+            $scope.isContentLoaded = false;
+            $scope.setContentLoaded = function()
+            {
+                $scope.isContentLoaded = true;
+            }
+
+        } ],
+        link: function(scope, element, attrs)
+        {
+
+            var root = eepParams.root;
+
+            var template = root + "/S9000/view/tree-modalcontent.htm";
+            var title = text.title;
+            var roottext = text.rootText;
+            var treetype = attrs['treeModal'];
+            var serviceurl = root + '/S9000/ngTreeView.asmx/' + treetype;
+            var leaficon = null;
+            var useparent = false;
+            var ticket = "";
+
+            switch (treetype)
+            {
+                case 'ConsultingLocation':
+                    title = text.CLTitle;
+
+                    break;
+                case 'FcuUnit':
+                    title = text.unitTitle;
+                    roottext = text.rootText;
+
+
+                    break;
+                case 'Apps':
+                    title = text.appsTitle;
+                    roottext = text.appsRootText;
+
+                    break;
+                case 'Country':
+                    title = text.countryTitle;
+                    roottext = text.countryRootText;
+
+                    break;
+                case 'Custom':
+                    template = scope.customTemplate || template;
+                    title = scope.customTitle || title;
+                    roottext = scope.customRootText || roottext;
+                    serviceurl = scope.customServiceUrl || serviceurl;
+                    leaficon = scope.customLeafIcon || leaficon;
+                    useparent = scope.customUseParent || useparent;
+                    break;
+                default:
+                    return;
+            }
+
+            scope.confirmTemplate = template;
+            scope.confirmTitle = title;
+            scope.rootText = roottext;
+            scope.serviceUrl = serviceurl;
+            scope.leafIcon = leaficon;
+
+            if (useparent)
+            {
+                scope.useParent = useparent;
+            }
+
+            scope.showLogin = function()
+            {
+                return false;
+            }
+
+            element.bind('click', function()
+            {
+
+                var modalInstance;
+
+
+                element[0].blur();
+                modalInstance = $modal.open({
+
+                    template: $templateCache.get('template/modal/confirm.html'),
+                    controller: 'treeModalInstanceCtrl',
+                    scope: scope,
+                    windowClass: 'fcu-modal tree-modal',
+                    backdrop: 'static'
+                });
+
+                modalInstance.result.then(function()
+                {
+                    scope.onOk({ selectednodes: scope.selectednodes.value });
+                }, function()
+                {
+                    scope.onCancel();
+                });
+            });
+        }
+    }
+
+} ]);
+
+
+fcuuibootstrap.controller("treeModalInstanceCtrl", ['$scope', '$modalInstance', '$rootScope', 'eepParams', 'modal', function($scope, $modalInstance, $rootScope, eepParams, modal)
+{
+    var text = {
+        loading: "資料載入中，請稍後再試！",
+        noItem: "您尚未選擇項目！"
+    }
+
+    if (eepParams.isEng)
+    {
+        text.loading = "Data Loading, please try again later";
+        text.noItem = "You have not selected item";
+    }
+
+    $scope.ok = function()
+    {
+
+        if ($rootScope.networkStatus == 1)
+        {            
+            modal.alert({alertText:text.loading});
+            return;
+        }
+
+        if ($scope.selectednodes.value.length == 0)
+        {            
+            modal.alert({alertText:text.noItem});
+
+        } else
+        {
+            $modalInstance.close();
+        }
+
+    }
+    $scope.cancel = function()
+    {
+        $modalInstance.dismiss();
+    }
+} ]);
+
+
+angular.module("template/modal/image.html", []).run(["$templateCache", 'eepParams', function($templateCache, eepParams)
+{
+    var text = {
+        btn1: "上一張",
+        btn2: "下一張",
+        btn3: "關閉"
+    };
+
+    if (eepParams.isEng)
+    {
+        text.btn1 = "Previous";
+        text.btn2 = "Next";
+        text.btn3 = "Close";
+    };
+
+
+    $templateCache.put("template/modal/image.html",
+    "<div class='image-body'>" +
+    "    <img ng-src=\"{{imgList.items[imgList.showindex].src}}\" alt=''/>" +
+    "</div>" +
+    "<center><span class=\"imagetitle\" >{{imgList.items[imgList.showindex].title}}</span></center>" +
+    "<a title=\"" + text.btn1 + "\" class=\"image-nav image-prev\" ng-click='prevImage()'><span></span></a>" +
+    "<a title=\"" + text.btn2 + "\" class=\"image-nav image-next\" ng-click='nextImage()'><span></span></a>" +
+    "<a title=\"" + text.btn3 + "\" class=\"image-item image-close\" ng-click='closeImage()'></a>");
+
+} ]);
+
+angular.module("template/modal/confirm.html", []).run(["$templateCache", 'eepParams', function($templateCache, eepParams)
+{
+    var text = {
+        confirmTitle: "確定",
+        confirmText: "確定執行此動作？",
+        okText: "確定",
+        cancelText: "取消"
+    };
+
+    if (eepParams.isEng)
+    {
+        text.confirmTitle = "Confirm";
+        text.confirmText = "Are you sure?",
+        text.okText = "Ok",
+        text.cancelText = "Cancel"
+    }
+
+
+    $templateCache.put("template/modal/confirm.html",
+    "<div class=\"modal-header\">" +
+    "   <h4>{{confirmTitle||'" + text.confirmTitle + "'}}</h4>" +
+    "</div>" +
+    "<div class=\"modal-body\"><div ng-if=\"confirmTemplate\" ng-hide='isContentLoaded'>Loading...</div>" +
+    "   <div ng-if=\"confirmTemplate\" ng-include=\"confirmTemplate\" onload='setContentLoaded()'>" +
+    "   </div>" +
+    "   <div ng-if=\"!confirmTemplate\">" +
+    "       <div style='white-space: pre-wrap'>{{confirmText||'" + text.confirmText + "'}}</div>" +
+    "   </div>" +
+    "</div>" +
+    "<div class=\"modal-footer\" ng-if=\"!!!hideFooter\">" +
+    "   <button class=\"btn btn-{{okType||'primary'}}\" ng-click=\"ok()\">{{okText||'" + text.okText + "'}}</button>" +
+    "   <button class=\"btn btn-default\" ng-click=\"cancel()\">{{cancelText||'" + text.cancelText + "'}}</button>" +
+    "</div>" +
+    "<a title=\"{{cancelText||'" + text.cancelText + "'}}\" class=\"image-item image-close\" ng-click=\"cancel()\"></a>");
+
+} ]);
+
+
+angular.module("template/modal/alert.html", []).run(["$templateCache", 'eepParams', function($templateCache, eepParams)
+{
+    var text = {
+        alertTitle: "訊息",
+        alertOkText: "關閉"
+
+    };
+
+    if (eepParams.isEng)
+    {
+        text.alertTitle = "Information";
+        text.alertOkText = "Close"
+
+    }
+
+    $templateCache.put("template/modal/alert.html",
+    "<div class=\"modal-header\">" +
+    "   <h4>{{alertTitle||'" + text.alertTitle + "'}}</h4>" +
+    "</div>" +
+    "<div class=\"modal-body\">" +
+    "   <div ng-if=\"alertTemplate\" ng-include=\"alertTemplate\" >" +
+    "   </div>" +
+    "   <div ng-if=\"!alertTemplate\">" +
+    "       <div style='white-space: pre-wrap'>{{alertText||'" + text.alertText + "'}}</div>" +
+    "   </div>" +
+    "</div>" +
+    "<div class=\"modal-footer\" ng-if=\"!!!hideFooter\">" +
+    "   <button class=\"btn btn-{{alertOkType||'primary'}}\" ng-click=\"ok()\">{{alertOkText||'" + text.alertOkText + "'}}</button>" +
+    "</div>" +
+    "<a title=\"{{alertOkText||'" + text.alertOkText + "'}}\" class=\"image-item image-close\" ng-click=\"ok()\"></a>");
+
+} ]);

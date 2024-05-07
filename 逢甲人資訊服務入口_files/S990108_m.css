@@ -1,0 +1,207 @@
+﻿.root-table_m
+{
+	margin: 0;
+	width: 100%;
+}
+
+.root-table_m tr
+{
+
+}
+
+.block_m
+{
+	background-color: rgba(255,255,255,1);
+	border: solid #bbb;
+	border-width: 1px;
+	border-radius: 2px;
+	/*-webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+	box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+	margin:3px;
+}
+
+.calendar-m-div
+{
+	text-align:center;
+	overflow:hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #E9E9E9), color-stop(0.03, #F6F6F6), color-stop(0.97, #F6F6F6), color-stop(1, #E9E9E9));
+	background-image: -o-linear-gradient(bottom, #E9E9E9 0%, #F6F6F6 3%, #F6F6F6 97%, #E9E9E9 100%);
+	background-image: -moz-linear-gradient(bottom, #E9E9E9 0%, #F6F6F6 3%, #F6F6F6 97%, #E9E9E9 100%);
+	background-image: -webkit-linear-gradient(bottom, #E9E9E9 0%, #F6F6F6 3%, #F6F6F6 97%, #E9E9E9 100%);
+	background-image: -ms-linear-gradient(bottom, #E9E9E9 0%, #F6F6F6 3%, #F6F6F6 97%, #E9E9E9 100%);
+	background-image: linear-gradient(to bottom, #E9E9E9 0%, #F6F6F6 3%, #F6F6F6 97%, #E9E9E9 100%);
+}
+
+.calendar-m-div-open
+{
+	animation: calendar-open 0.1s;
+	-moz-animation: calendar-open 0.1s;	/* Firefox */
+	-webkit-animation: calendar-open 0.1s;	/* Safari 和 Chrome */
+	-o-animation: calendar-open 0.1s;	/* Opera */
+	height:254px;
+	padding-top:15px;
+	padding-bottom:10px;
+	border: solid #bbb;
+	border-width:1px 0 1px 0;
+}
+
+.calendar-m-div-close
+{
+	animation: calendar-close 0.3s;
+	-moz-animation: calendar-close 0.3s;	/* Firefox */
+	-webkit-animation: calendar-close 0.3s;	/* Safari 和 Chrome */
+	-o-animation: calendar-close 0.3s;	/* Opera */
+	height:0px;
+	padding:0px;
+}
+
+@-webkit-keyframes calendar-close {
+	0% 
+	{
+		opacity:1;
+		height:254px;
+		padding-top:15px;
+		padding-bottom:10px;
+	}
+
+	100% 
+	{
+		opacity:0;
+		height:0px;
+		padding:0px;
+	}
+}
+
+@keyframes calendar-close {
+	0% 
+	{
+		opacity:1;
+		height:254px;
+		padding-top:15px;
+		padding-bottom:10px;
+	}
+
+	100% 
+	{
+		opacity:0;
+		height:0px;
+		padding:0px;
+	}
+}
+
+@-webkit-keyframes calendar-open {
+	0% 
+	{
+		opacity:0;
+		height:0px;
+		padding:0px;
+	}
+
+	100% 
+	{
+		opacity:1;
+		height:254px;
+		padding-top:15px;
+		padding-bottom:10px;
+		border: solid #bbb;
+		border-width:1px 0 1px 0;
+	}
+}
+
+@keyframes calendar-open {
+	0% 
+	{
+		opacity:0;
+		height:0px;
+		padding:0px;
+	}
+
+	100% 
+	{
+		opacity:1;
+		height:254px;
+		padding-top:15px;
+		padding-bottom:10px;
+		border: solid #bbb;
+		border-width:1px 0 1px 0;
+	}
+}
+
+.calendar-m-div div
+{
+	text-align:center;
+}
+.calendar-m-div div calendar
+{
+	margin-left:-125px;
+}
+
+.tabs-div_m
+{
+	text-align:left;
+	float:left;
+	width:60%;
+	/*margin-bottom:5px;*/
+}
+
+.tabs-div_m .btn
+{
+	width:150px;
+}
+
+.func-div_m
+{
+	text-align:right;
+	float:right;
+	width:40%;
+}
+
+.drop-down-list_m
+{
+	border:solid 1px #aaa;
+	background-color:White;
+	border-radius: 3px;
+	padding:4px 12px 4px 12px;
+	font-size:14px;
+	color:#666;
+	cursor:pointer;
+	
+	appearance:none;
+	-moz-appearance:none; /* Firefox */
+	-webkit-appearance:none; /* Safari and Chrome */
+	
+	background: url('img/dropdown_arrow.png') no-repeat;
+	background-position:right center;
+	background-size: contain;
+	width: 80px;
+	
+	display: inline-block;
+    margin: 5px .2% 5px .2%;
+    line-height: 18px;
+}
+
+.drop-down-list_m:hover
+{
+	border-color:#666;
+}
+
+.msg-table_m
+{
+	width: 100%;
+    vertical-align: middle;
+    margin-top: 5px;
+}
+
+.msg-table_m tr th
+{
+	border:solid 1px #aaa;
+	padding: 2px;
+    text-align: center;
+	background-color:#ececec;
+}
+.msg-table_m tr td
+{
+	border:solid 1px #aaa;
+}
+
+*, *:before, *:after {  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  box-sizing: border-box; }.rwd-table {  border-collapse: collapse;  width: 100%;  float: left;  margin: 0 0 2em; }  .rwd-table tfoot td {    padding: 0.35em 0 .35em;    text-align: left; }.rwd-table {  display: block; }  .rwd-table tbody {    border: none; }  .rwd-table tbody, .rwd-table th, .rwd-table td, .rwd-table tr, .rwd-table tfoot {    display: block; }  .rwd-table thead {    display: none; }  .rwd-table tr {    float: left;    width: 100%;    margin: 0 0 1em;    border: 1px solid #ddd;    box-shadow: 0 2px 5px 0 #ddd;    border-radius: 4px;    border-top: 5px solid #008cba; }    .rwd-table tr td {      padding: 0.5em 0.5em 0.5em 35%;      float: left;      width: 100%;      border-bottom: 1px solid rgba(0, 0, 0, 0.12); }      .rwd-table tr td:before {        width: 50%;        display: block;        float: left;        padding: .5em .5em .5em 0;        clear: both;        margin: -0.5em 0 0 -50%;        -ms-word-break: break-word;        word-break: break-word;        font-weight: bold; }  .rwd-table tbody tr td:before {    content: attr(data-title); }  .rwd-table tr:nth-of-type(even) {    /*background: $gray-color;*/ }  @media screen and (min-width: 600px) {    .rwd-table.mid {      display: table;      border: none; }      .rwd-table.mid tbody {        border-bottom: 3px solid #008cba; }      .rwd-table.mid th, .rwd-table.mid td {        display: table-cell; }      .rwd-table.mid tr {        display: table-row;        border: none;             float: none;        margin: 0;        box-shadow: none; }        .rwd-table.mid tr td {          padding: .25em 0.25em .25em .25em;          float: none;          width: auto;          height: 59px;          border: 1px solid rgba(0, 0, 0, 0.12);          text-align: left; }          .rwd-table.mid tr td:first-child {            text-align: center !important; }          .rwd-table.mid tr td:before {            padding: 0 !important; }      .rwd-table.mid thead {        display: table-header-group;        border-bottom: 3px solid #008cba; }        .rwd-table.mid thead th {          padding: 0.35em 0 .35em;          font-weight: bold;          text-align: center;}      .rwd-table.mid tbody, .rwd-table.mid tfoot {        display: table-row-group; }      .rwd-table.mid tbody tr td:before {        content: ''; }      .rwd-table.mid tbody tr:hover {        background-color: #f5f5f5; }      .rwd-table.mid tr:nth-of-type(even) {        background: none; } }
